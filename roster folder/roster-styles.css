@@ -1,0 +1,182 @@
+:root {
+  --accent-2: #d877ff;
+}
+
+.rank-section {
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1400px;
+}
+
+.rank-title {
+  margin: 0 0 20px;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.hicom-section {
+  margin-top: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1400px;
+}
+
+.hicom-title {
+  margin: 0 0 20px;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.leadership-row {
+  display: grid !important;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+
+.leadership-card {
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.leadership-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.leadership-card .avatar {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.leadership-card .name {
+  margin: 12px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.leadership-card .rank {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.leadership-card .callsign {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.roster-grid {
+  display: grid !important;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.roster-card {
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.roster-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.roster-card .avatar {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  border-radius: 8px;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.roster-card .name {
+  margin: 12px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.roster-card .rank {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.roster-card .callsign {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.section {
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.intro {
+  background: linear-gradient(145deg, #11192c, #0f1526);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(216, 119, 255, 0.18);
+  color: var(--accent-2);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--muted);
+}
