@@ -3,224 +3,399 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FHP Ghost Unit Vehicle Guidelines</title>
+  <title>FHP Ghost Unit — Vehicle Guide</title>
+
   <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/pages/vehicle.css" />
+  <link rel="stylesheet" href="css/pages/handbook.css" />
+  <style>
+    /* COLLAPSIBLE CHECKER */
+    .checker-seamless {
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+    }
+    .checker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .checker-header h4 { margin: 0; font-size: 18px; color: var(--accent);}
+    .checker-body { display: none; }
+    .checker-body .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .sub-template.multi { grid-column: span 4; }
+    .checker-body label { display: block; margin-bottom: 6px; font-size: 14px; color: var(--accent);}
+    .checker-body select { width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 14px; appearance: none; cursor: pointer;}
+
+    /* TAG INPUT */
+    .tag-input-container { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 10px; min-height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); cursor: text; position: relative; }
+    .tag-input-container input { border: none; background: transparent; outline: none; color: var(--text); flex: 1 1 120px; min-width: 60px; font-size: 14px; }
+    .tag { display: flex; align-items: center; background: rgba(95,176,255,0.12); color: var(--accent); padding: 4px 10px; border-radius: 999px; font-size: 13px; }
+    .tag span.remove { margin-left: 6px; cursor: pointer; font-weight: bold; }
+    .suggestions ul { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; list-style: none; margin: 4px 0 0; padding: 4px 0; max-height: 160px; overflow-y: auto; display: none;}
+    .suggestions ul li { padding: 6px 10px; cursor: pointer; color: var(--text);}
+    .suggestions ul li:hover { background: rgba(95,176,255,0.15);}
+    .checker-result { margin-top: 12px; font-weight: 600; color: var(--accent);}
+    @media(max-width:768px){ .checker-body .grid{ grid-template-columns: 1fr;} .sub-template.multi{ grid-column: span 1; } }
+  </style>
 </head>
-<body class="page-vehicle">
-  <div id="particles-js"></div>
-  <div class="page-wrap">
-    <header>
-      <div class="nav-wrap">
-        <div class="brand">
-          <img src="assets/logo.png" alt="FHP Ghost Unit logo" class="logo" />
-          <span class="eyebrow">FSRP • Ghost Unit</span>
-          <h1>Handbook</h1>
-        </div>
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="handbook.html">Handbook</a>
-          <a href="chain-of-command.html">Chain of Command</a>
-          <a class="active" href="vehicle-guidelines.html">Vehicle Guidelines</a>
-          <a href="troopers.html">Troopers</a>
-          <a href="official_media.html">Official Media</a>
-        </nav>
+<body class="page-handbook">
+<div id="particles-js"></div>
+<div class="page-wrap">
+  <header>
+    <div class="nav-wrap">
+      <div class="brand">
+        <img src="assets/logo.png" alt="FHP Ghost Unit logo" class="logo" />
+        <span class="eyebrow">FSRP • Ghost Unit</span>
+        <h1>Vehicle Guide</h1>
       </div>
-    </header>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="handbook.html">Handbook</a>
+        <a class="active" href="#">Vehicle Guide</a>
+      </nav>
+    </div>
+  </header>
+
   <main class="wrap">
     <section class="intro">
-      <span class="tag">Fleet Standards</span>
-      <p>
-        All Ghost Unit vehicles must follow approved livery, equipment, and usage protocols.
-        Keep fleet presentation professional and avoid unauthorized modifications.
-      </p>
-      <div class="guide-nav">
-        <a href="#high-command">High Command</a>
-        <a href="#senior-high-rank">Senior High Rank</a>
-        <a href="#high-rank">High Rank</a>
-        <a href="#sergeant-program">Sergeant Program</a>
-        <a href="#low-rank">Low Rank</a>
-        <a href="#hspu">HSPU</a>
-        <a href="#srt">SRT</a>
-      </div>
-      <p class="section-note">Use the buttons to jump directly to each vehicle guideline set.</p>
+      <span class="tag">Department Vehicle Regulations</span>
+      <p>This document outlines all approved vehicles, accessories, and lighting configurations by division and rank. Any configuration not listed is unauthorized.</p>
     </section>
 
-    <section class="grid">
-      <div class="card" id="high-command">
-        <h2>High Command</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 10/16/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Mobile Command 2005</li>
-          <li>Chevlon Corbeta RZR 2014</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Window Lights</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Siderunner</li>
-          <li><strong>Accessories:</strong> Pushbar (Optional), Wraparound Bar, ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL | White, FHP Ghost Unit | WL</li>
-          <li><strong>Antennas (Sedan):</strong> 5G Antenna (Trunk Right), Long Range Antenna (Rear Center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Antennas (SUV):</strong> 5G Antenna (Right), Long Range Antenna (Rear/Center), Low Profile Antenna (Front)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight (Optional), Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
+    <div class="divider"></div>
+
+    <!-- COLLAPSIBLE VEHICLE CONFIGURATION CHECKER -->
+    <section class="checker-seamless">
+      <div class="checker-header">
+        <h4>Vehicle Configuration Checker</h4>
+        <span id="toggleChecker">▼</span>
       </div>
 
-      <div class="card" id="senior-high-rank">
-        <h2>Senior High Rank</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 01/15/26<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Bullhorn Prancer Pursuit 2011</li>
-          <li>Chevlon Platoro PPV 2019</li>
-          <li>Falcon Estallion 2024</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Lightstick</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Fog Lights, Fender Lights, Grille Lights, Plate Lights, Siderunner</li>
-          <li><strong>Accessories:</strong> Pushbar, Wraparound Bar, ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL</li>
-          <li><strong>Antennas (Sedan):</strong> 5G Antenna (Trunk Right), Long Range Antenna (Rear Center/ trunk center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Antennas (SUV):</strong> 5G Antenna (Right), Long Range Antenna (Rear/Center), Low Profile Antenna (Front)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight (Optional), Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
-      </div>
+      <div class="checker-body" id="checkerBody">
+        <div class="grid">
+          <!-- Single options -->
+          <div class="sub-template">
+            <label>Division</label>
+            <select id="division">
+              <option value="">Select Division</option>
+              <option value="none">None</option>
+              <option value="srt">SRT</option>
+              <option value="hspu">HSPU</option>
+            </select>
+          </div>
 
-      <div class="card" id="high-rank">
-        <h2>High Rank</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 10/16/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Chevlon Camion PPV 2021</li>
-          <li>Falcon Interceptor Utility 2024</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Lightstick</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Fog Lights, Fender Lights, Siderunner</li>
-          <li><strong>Accessories:</strong> Pushbar, Wraparound Bar, ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL</li>
-          <li><strong>Antennas (Sedan):</strong> 5G Antenna (Trunk Right), Long Range Antenna (Rear Center/ trunk center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Antennas (SUV):</strong> 5G Antenna (Right), Long Range Antenna (Rear/Center), Low Profile Antenna (Front)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight, Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
-      </div>
+          <div class="sub-template">
+            <label>Rank</label>
+            <select id="rank">
+              <option value="">Select Rank</option>
+              <option value="lr">Low Rank</option>
+              <option value="sgt">Sergeant</option>
+              <option value="hr">High Rank</option>
+              <option value="shr">Senior High Rank</option>
+              <option value="hicom">High Command</option>
+            </select>
+          </div>
 
-      <div class="card" id="sergeant-program">
-        <h2>Sergeant Program</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 10/16/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Chevlon Camion PPV 2021</li>
-          <li>Falcon Interceptor Utility 2024</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Lightstick</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Fog Lights, Small Siderunner</li>
-          <li><strong>Accessories:</strong> Pushbar, Wraparound Bar, ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL</li>
-          <li><strong>Antennas (Sedan):</strong> 5G Antenna (Trunk Right), Long Range Antenna (Rear Center/ trunk center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Antennas (SUV):</strong> 5G Antenna (Right), Long Range Antenna (Rear/Center), Low Profile Antenna (Front)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight, Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
-      </div>
+          <div class="sub-template">
+            <label>Car</label>
+            <select id="car">
+              <option value="">Select Car</option>
+            </select>
+          </div>
 
-      <div class="card" id="low-rank">
-        <h2>Low Rank</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 10/16/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Chevlon Camion PPV 2018</li>
-          <li>Bullhorn Prancer Pursuit 2015</li>
-          <li>Chevlon Antelope 1994</li>
-          <li>Chevlon PPV 2008</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Lightstick</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Fog Lights, Small Siderunners</li>
-          <li><strong>Accessories:</strong> Pushbar, Wraparound Bar, ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL</li>
-          <li><strong>Antennas:</strong> 5G Antenna (Right), Long Range Antenna (Center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight, Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
-      </div>
+          <div class="sub-template">
+            <label>Decal</label>
+            <select id="decal">
+              <option value="">Select Decal</option>
+              <option value="marked">Marked</option>
+              <option value="slicktop">Slicktop</option>
+              <option value="none">None</option>
+            </select>
+          </div>
 
-      <div class="card" id="hspu">
-        <h2>High Speed Pursuit Unit (HSPU)</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 12/12/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Authorized vehicles</h3>
-        <ul>
-          <li>Chevlon Corbeta RZR 2014 (High Command only, see vehicle guideline for use.)</li>
-          <li>Bullhorn Prancer Pursuit Widebody 2020 (Director+)</li>
-          <li>Falcon Stallion 350 2015 (Head Officer+, Application)</li>
-          <li>Bullhorn Prancer Pursuit 2011 (Senior Officer+, Application)</li>
-          <li>Chevron Amigo ZLR 2011 (Officer First+, Application)</li>
-          <li>Bullhorn Prancer Pursuit 2015 (Probationary Officer, Officer+)</li>
-        </ul>
-        <h3>Customization preset (mandatory)</h3>
-        <ul>
-          <li><strong>Main light options:</strong> Visor Lights, Legacy Lightbar</li>
-          <li><strong>Rear light options:</strong> Rear Window Lights</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Small Siderunners</li>
-          <li><strong>Accessories:</strong> Pushbar, Wraparound Bar, Grappler (See handbook for use), ALPR (Optional)</li>
-          <li><strong>Texture:</strong> FHP Ghost Unit | WL</li>
-          <li><strong>Antennas:</strong> 5G Antenna (Right), Long Range Antenna (Center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight, Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
-      </div>
+          <div class="sub-template">
+            <label>Lightbar</label>
+            <select id="lightbar">
+              <option value="">Select Lightbar</option>
+              <option value="legacy">Legacy</option>
+              <option value="visor">Visor Lights</option>
+            </select>
+          </div>
 
-      <div class="card" id="srt">
-        <h2>Special Response Team (SRT)</h2>
-        <p><strong>Date of Issue:</strong> 10/16/25<br><strong>Last updated:</strong> 12/12/25<br><strong>Approved by:</strong> GU-001 | saabsterz</p>
-        <h3>Vehicle roster</h3>
-        <ul>
-          <li>2008 Chevlon Camion PPV - Probationary Operative+</li>
-          <li>2015 Bullhorn Prancer Pursuit - Probationary Operative+</li>
-          <li>Equipment Trailer - Probationary Operative+</li>
-          <li>2019 Chevlon Plotoro - Operative+</li>
-          <li>2020 Emergency Services Falcon Advance+ - Senior Operative+</li>
-          <li>2011 SWAT Truck - Senior Operative+ when there are more than 4 available S.R.T. units and with permissions of Chief+</li>
-        </ul>
-        <h3>Vehicle guidelines</h3>
-        <ul>
-          <li><strong>Lightbar:</strong> Legacy Lightbar, Visor Lights</li>
-          <li><strong>Additional lighting:</strong> Side Window Lights, Plate Lights, Front Bumper Lights (ES Falcon Advance+), Fender Lights, Fog Lights, Small Siderunners, Siderunners (SO+), Rear Light Stick</li>
-          <li><strong>Accessories:</strong> Trailer Hitch, LED Spotlights, Flood Lights (ES Falcon Advance+), ALPR (Optional)</li>
-          <li><strong>Antennas:</strong> 5G Antenna - Right (Front Right on ES Falcon Advance+), Low Profile Antenna - Front Center, Long Range Antenna - Rear Center/Center (Rear on ES Falcon Advance+), Long Range Antenna (rear Center/ trunk center), Low Profile Antenna (Front Center)</li>
-          <li><strong>Spotlights:</strong> LED Spotlight, Passenger Spotlight (Optional)</li>
-        </ul>
-        <p>If a customization option is not listed, you may not use it. Additional customizations are listed in the SRT handbook.</p>
-        <p><strong>Leaking this document will lead to your immediate termination.</strong></p>
+          <!-- Multi options -->
+          <div class="sub-template multi">
+            <label>Accessories</label>
+            <div class="tag-input-container suggestions" id="accessoriesContainer">
+              <input type="text" placeholder="Type or select..." />
+              <ul id="accessoriesSuggestions"></ul>
+            </div>
+          </div>
+          <div class="sub-template multi">
+            <label>Additional Lighting</label>
+            <div class="tag-input-container suggestions" id="lightingContainer">
+              <input type="text" placeholder="Type or select..." />
+              <ul id="lightingSuggestions"></ul>
+            </div>
+          </div>
+        </div>
+        <p id="result" class="checker-result"></p>
       </div>
     </section>
   </main>
 
   <footer>
-     <span id="y"></span> FSRP • Florida Highway Patrol Ghost Unit
+    FSRP • Florida Highway Patrol Ghost Unit
   </footer>
-  </div>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="js/app.js"></script>
+</div>
+
+<script>
+let rulesData = {};     // division -> rank -> rules
+let optionalRules = {}; // optional => mandatory
+
+async function loadRules() {
+  const res = await fetch("rules.txt");
+  const txt = await res.text();
+  parseRules(txt);
+  updateDivisionOptions();
+  checkConfig();
+}
+
+function parseRules(txt) {
+  rulesData = {};
+  optionalRules = {};
+  const lines = txt.split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#"));
+  let currentDiv = null;
+  let currentRank = null;
+
+  lines.forEach(line => {
+    // optional rules
+    if (line.includes("=>")) {
+      const [opt, mand] = line.split("=>").map(s => s.trim());
+      optionalRules[opt] = mand;
+      return;
+    }
+
+    // new division or rank
+    if (line.includes("=")) {
+      const [left, right] = line.split("=").map(s => s.trim());
+      const divParts = left.split(" ");
+      if (divParts.length === 1) {
+        // Division only
+        currentDiv = divParts[0];
+        currentRank = null;
+        if (!rulesData[currentDiv]) rulesData[currentDiv] = {};
+      } else {
+        // Division + rank
+        currentDiv = divParts[0];
+        currentRank = divParts[1];
+        if (!rulesData[currentDiv]) rulesData[currentDiv] = {};
+        rulesData[currentDiv][currentRank] = {};
+        const parts = right.split(";");
+        parts.forEach(p => {
+          const [key, val] = p.split(":").map(s => s.trim());
+          if (key && val) rulesData[currentDiv][currentRank][key] = val.split(",").map(x => x.trim());
+        });
+      }
+      return;
+    }
+  });
+
+  // For each division, compute inheritance of cars for high ranks
+  Object.keys(rulesData).forEach(div => {
+    const ranks = Object.keys(rulesData[div]);
+    const rankOrder = ["LR","SGT","HR","SHR","HICOM","SRT","HSPU"];
+    ranks.forEach((r, i) => {
+      const cars = rulesData[div][r]["ALLOWED_CARS"] || [];
+      for (let j = i+1; j < ranks.length; j++) {
+        const higherRank = ranks[j];
+        if(!rulesData[div][higherRank]["ALLOWED_CARS"]) rulesData[div][higherRank]["ALLOWED_CARS"] = [];
+        rulesData[div][higherRank]["ALLOWED_CARS"] = [...new Set(rulesData[div][higherRank]["ALLOWED_CARS"].concat(cars))];
+      }
+    });
+  });
+}
+
+// -------------------------
+// Populate DIVISION / RANK / CAR
+// -------------------------
+const divisionSelect = document.getElementById("division");
+const rankSelect = document.getElementById("rank");
+const carSelect = document.getElementById("car");
+
+function updateDivisionOptions() {
+  divisionSelect.innerHTML = `<option value="">Select Division</option>`;
+  Object.keys(rulesData).forEach(div => {
+    const opt = document.createElement("option");
+    opt.value = div;
+    opt.textContent = div;
+    divisionSelect.appendChild(opt);
+  });
+  updateRankOptions();
+}
+
+function updateRankOptions() {
+  rankSelect.innerHTML = `<option value="">Select Rank</option>`;
+  const div = divisionSelect.value;
+  if (!div) return;
+  Object.keys(rulesData[div]).forEach(rank => {
+    const opt = document.createElement("option");
+    opt.value = rank;
+    opt.textContent = rank;
+    rankSelect.appendChild(opt);
+  });
+}
+
+function updateCars() {
+  carSelect.innerHTML = `<option value="">Select Car</option>`;
+  const div = divisionSelect.value;
+  const rank = rankSelect.value;
+  if (!div || !rank) return;
+
+  let cars = rulesData[div][rank]["ALLOWED_CARS"] || [];
+
+  // Special: HICOM can use all cars globally
+  if (div === "HICOM") {
+    let allCars = [];
+    Object.keys(rulesData).forEach(d => {
+      Object.keys(rulesData[d]).forEach(r => {
+        allCars = allCars.concat(rulesData[d][r]["ALLOWED_CARS"] || []);
+      });
+    });
+    cars = [...new Set(allCars)];
+  }
+
+  cars.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    carSelect.appendChild(opt);
+  });
+}
+
+// -------------------------
+// Check configuration
+// -------------------------
+const result = document.getElementById("result");
+function checkConfig() {
+  const div = divisionSelect.value;
+  const rank = rankSelect.value;
+  const car = carSelect.value;
+
+  if (!div || !rank || !car) {
+    result.textContent = "Select division, rank, and car.";
+    return;
+  }
+
+  const data = rulesData[div][rank];
+  let messages = [];
+
+  // CAR
+  if (!data.ALLOWED_CARS.includes(car)) messages.push(`❌ Car "${car}" is not allowed for ${div} ${rank}`);
+
+  // ACCESSORIES / LIGHTING
+  const accessories = getAccessories();
+  const lighting = getLighting();
+  (data.REQUIRED_ACCESSORIES || []).forEach(a => {
+    if (!accessories.includes(a)) messages.push(`❌ Required accessory missing: ${a}`);
+  });
+  accessories.forEach(a => {
+    if (!(data.REQUIRED_ACCESSORIES||[]).includes(a) && !(data.OPTIONAL_ACCESSORIES||[]).includes(a))
+      messages.push(`❌ Accessory "${a}" is not allowed`);
+    if (optionalRules[a]) {
+      if (!accessories.includes(optionalRules[a])) messages.push(`❌ Optional accessory "${a}" requires "${optionalRules[a]}"`);
+    }
+  });
+
+  (data.REQUIRED_LIGHTING||[]).forEach(l => {
+    if (!lighting.includes(l)) messages.push(`❌ Required lighting missing: ${l}`);
+  });
+
+  result.textContent = messages.length ? messages.join("\n") : "✅ Configuration approved.";
+}
+
+// -------------------------
+// Event listeners
+// -------------------------
+divisionSelect.addEventListener("change", () => { updateRankOptions(); updateCars(); checkConfig(); });
+rankSelect.addEventListener("change", () => { updateCars(); checkConfig(); });
+carSelect.addEventListener("change", checkConfig);
+
+// -------------------------
+// Setup tag inputs (accessories / lighting)
+// -------------------------
+function setupTagInput(containerId) {
+  const container = document.getElementById(containerId);
+  const input = container.querySelector("input");
+  const ul = container.querySelector("ul");
+  let tags = [];
+
+  function refreshTags() {
+    container.querySelectorAll(".tag").forEach(t => t.remove());
+    tags.forEach(t => {
+      const tagEl = document.createElement("span"); tagEl.className="tag"; tagEl.textContent=t;
+      const x = document.createElement("span"); x.className="remove"; x.textContent="×";
+      x.onclick = () => { tags = tags.filter(v => v!==t); refreshTags(); checkConfig(); };
+      tagEl.appendChild(x);
+      container.insertBefore(tagEl, input);
+    });
+  }
+
+  function showSuggestions(val="") {
+    ul.innerHTML = "";
+    const div = divisionSelect.value;
+    if (!div) return;
+    const options = (rulesData[div][rankSelect.value]["REQUIRED_ACCESSORIES"]||[]).concat(rulesData[div][rankSelect.value]["OPTIONAL_ACCESSORIES"]||[]);
+    const filtered = options.filter(o => !tags.includes(o) && (!val || o.toLowerCase().includes(val.toLowerCase())));
+    filtered.forEach(f => {
+      const li = document.createElement("li");
+      li.textContent = f;
+      li.onclick = () => { tags.push(f); input.value=""; ul.style.display="none"; refreshTags(); checkConfig(); };
+      ul.appendChild(li);
+    });
+    ul.style.display = filtered.length ? "block" : "none";
+  }
+
+  input.addEventListener("input",()=>showSuggestions(input.value));
+  input.addEventListener("focus",()=>showSuggestions());
+  document.addEventListener("click", e => { if(!container.contains(e.target)) ul.style.display="none"; });
+  input.addEventListener("keydown", e => {
+    if (e.key==="Enter" && input.value.trim()) { tags.push(input.value.trim()); input.value=""; ul.style.display="none"; refreshTags(); checkConfig(); e.preventDefault();}
+    else if (e.key==="Backspace" && !input.value) { tags.pop(); refreshTags(); checkConfig(); }
+  });
+  container.addEventListener("click",()=>input.focus());
+  return ()=>tags;
+}
+
+const getAccessories = setupTagInput("accessoriesContainer");
+const getLighting = setupTagInput("lightingContainer");
+
+// -------------------------
+// Load rules on page load
+// -------------------------
+loadRules();
+</script>
+<script>
+// COLLAPSIBLE CHECKER
+const toggleChecker = document.getElementById("toggleChecker");
+const checkerBody = document.getElementById("checkerBody");
+
+toggleChecker.addEventListener("click", () => {
+  const isOpen = checkerBody.style.display === "block";
+  checkerBody.style.display = isOpen ? "none" : "block";
+  toggleChecker.textContent = isOpen ? "▼" : "▲"; // arrow changes
+});
+// Optionally, start collapsed
+checkerBody.style.display = "block";
+toggleChecker.textContent = "▲";
+</script>
+</script>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

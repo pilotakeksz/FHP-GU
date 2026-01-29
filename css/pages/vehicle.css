@@ -1,69 +1,144 @@
-/* Vehicle Guidelines page */
-
-.page-vehicle .grid {
-  margin-top: 24px;
-  grid-template-columns: 1fr;
-  gap: 18px;
-}
-
-.page-vehicle .card {
-  background: var(--surface);
-  border-radius: 16px;
+/* --- COLLAPSIBLE CHECKER & TAG INPUT STYLING --- */
+.checker-seamless {
   padding: 18px;
+  border-radius: 16px;
   border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  margin-bottom: 32px;
 }
-
-.page-vehicle .card h2 {
-  margin: 0 0 8px;
-  font-size: 18px;
+.checker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 12px;
 }
-
-.page-vehicle .card p {
-  margin: 0 0 12px;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.page-vehicle .card h3 {
-  margin: 16px 0 8px;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-2);
-}
-
-.page-vehicle .card ul {
+.checker-header h4 {
   margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  line-height: 1.7;
+  font-size: 18px;
+  color: var(--accent);
+}
+.checker-body {
+  display: none; /* default collapsed */
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
 }
 
-.guide-nav {
+.checker-body.open {
+  display: block;
+  max-height: 2000px; /* large enough to fit all content */
+  opacity: 1;
+}
+
+
+/* Checker grid */
+.checker-body .grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.sub-template.multi {
+  grid-column: span 4;
+}
+.checker-body label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+/* Single select styling */
+.checker-body select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+}
+
+/* Multi-tag input */
+.tag-input-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 6px;
+  padding: 6px 10px;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  cursor: text;
+  position: relative;
 }
-
-.guide-nav a {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(232, 168, 56, 0.5);
+.tag-input-container input {
+  border: none;
+  background: transparent;
+  outline: none;
   color: var(--text);
-  background: rgba(232, 168, 56, 0.1);
-  font-size: 13px;
-  transition: all 0.2s ease;
-}
-
-.guide-nav a:hover {
-  background: rgba(232, 168, 56, 0.2);
-  border-color: rgba(232, 168, 56, 0.7);
-}
-
-.section-note {
-  margin-top: 12px;
-  color: var(--muted);
+  flex: 1 1 120px;
+  min-width: 60px;
   font-size: 14px;
-  line-height: 1.7;
+}
+.tag {
+  display: flex;
+  align-items: center;
+  background: rgba(95,176,255,0.12);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.tag span.remove {
+  margin-left: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Suggestions dropdown */
+.suggestions ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 4px 0;
+  max-height: 160px;
+  overflow-y: auto;
+  display: none;
+}
+.suggestions ul li {
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--text);
+}
+.suggestions ul li:hover {
+  background: rgba(95,176,255,0.15);
+}
+
+.checker-result {
+  margin-top: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Responsive for mobile */
+@media(max-width:768px){
+  .checker-body .grid{
+    grid-template-columns: 1fr;
+  }
+  .sub-template.multi{
+    grid-column: span 1;
+  }
 }

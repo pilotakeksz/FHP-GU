@@ -1,0 +1,69 @@
+# ============================
+# FHP Ghost Unit — Vehicle Rules
+# Date: 10/16/25
+# Updated: 12/12/25
+# ============================
+
+# -------------------
+# OPTIONAL RULES
+# -------------------
+# Format: optional => mandatory if selected
+ALPR => Pushbar
+
+# -------------------
+# DIVISION Normal
+# -------------------
+HICOM = ALLOWED_CARS:Mobile Command 2005,Chevlon Corbeta RZR 2014,Bullhorn Prancer Pursuit 2015,Bullhorn Prancer Pursuit 2011,Bullhorn Prancer Pursuit Widebody 2020,Bullhorn Pueblo Pursuit 2018,Chevlon Amigo ZLR 2011,Chevlon Antelope 1994,Chevlon Camion PPV 2018,Chevlon Camion PPV 2021,Chevlon Platoro PPV 2019,Chevlon PPV 2008,Equipment Trailer,Emergency Services Falcon Advance+ 2020,Falcon Interceptor Utility 2019,Falcon Estallion 2024,Falcon Stallion 350 2015,Stuttgart Runner 2020,SWAT Armored Truck 2011;
+DECALS:FHP Ghost Unit | WL | White,FHP Ghost Unit | WL ANTENNAS;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,Grappler;
+
+SHR = ALLOWED_CARS:Bullhorn Prancer Pursuit 2011,Chevlon Platoro PPV 2019,Falcon Estallion 2024,Bullhorn Prancer Pursuit 2015,Bullhorn Pueblo Pursuit 2018,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
+DECALS:FHP Ghost Unit | BLK;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,Grappler;
+
+HR = ALLOWED_CARS:Chevlon Camion PPV 2021,Falcon Interceptor Utility 2024,Bullhorn Prancer Pursuit 2011,Chevlon Platoro PPV 2019,Falcon Estallion 2024,Bullhorn Prancer Pursuit 2015,Bullhorn Pueblo Pursuit 2018,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,Grappler;
+
+SGT = ALLOWED_CARS:Bullhorn Pueblo Pursuit 2020,Falcon Interceptor Utility 2019,Falcon Interceptor Utility 2013,Bullhorn Prancer Pursuit 2015,Bullhorn Prancer Pursuit 2011,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Small Siderunners,Fender Lights;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,Grappler;
+
+LR = ALLOWED_CARS:Bullhorn Prancer Pursuit 2015,Chevlon Antelope 1994,Chevlon PPV 2008,Chevlon Camion PPV 2018,Equipment Trailer,Lighting Trailer;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,Grappler;
+
+# -------------------
+# DIVISION: HSPU
+# -------------------
+HSPU = ALLOWED_CARS:Chevlon Corbeta RZR 2014 (High Command only),Bullhorn Prancer Pursuit Widebody 2020 (Director+),Falcon Stallion 350 2015 (Head Officer+),Bullhorn Prancer Pursuit 2011 (Senior Officer+),Chevron Amigo ZLR 2011 (Officer First+),Bullhorn Prancer Pursuit 2015 (Probationary Officer/Officer+);
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
+OPTIONAL_ACCESSORIES:ALPR;
+
+# -------------------
+# DIVISION: SRT
+# -------------------
+SRT = ALLOWED_CARS:2008 Chevlon Camion PPV (Probationary Operative+),2015 Bullhorn Prancer Pursuit (Probationary Operative+),Equipment Trailer (Probationary Operative+),2019 Chevlon Platoro (Operative+),2020 Emergency Services Falcon Advance+ (Senior Operative+),2011 SWAT Truck (Senior Operative+, only if >4 units & Chief+ permission);
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Visor Lights,Legacy Lightbar;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Front Bumper Lights (ES Falcon Advance+),Fender Lights,Small Siderunners,Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight;
