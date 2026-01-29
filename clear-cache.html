@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clear Cache</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <main class="wrap" style="text-align: center; padding-top: 4rem;">
+      <h1>Clearing cache…</h1>
+      <p id="status" class="muted">Removing cached roster data…</p>
+    </main>
+  </div>
+  <script>
+    localStorage.removeItem("roster_cache");
+    localStorage.removeItem("roster_cache_expiry");
+    document.getElementById("status").textContent = "Cache cleared! Redirecting to troopers…";
+    setTimeout(function () { window.location.href = "troopers.html"; }, 1500);
+  </script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

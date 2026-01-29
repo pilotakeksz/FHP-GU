@@ -1,0 +1,26 @@
+/* Promotions page */
+
+.page-promotions .grid {
+  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.page-promotions .card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--border);
+}
+
+.page-promotions .card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.page-promotions .card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.7;
+}

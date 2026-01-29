@@ -1,0 +1,45 @@
+.handbook-nav {
+  margin-top: 20px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.handbook-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border, #2a2f3a);
+  background: var(--surface, #151922);
+  color: var(--text, #e6e6e6);
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.handbook-nav a span {
+  color: var(--muted, #999);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.handbook-nav a:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow, 0 2px 8px rgba(0,0,0,0.3));
+  border-color: rgba(232, 168, 56, 0.3);
+}
+
+.handbook-nav a.active {
+  background: rgba(60,130,255,0.15);
+  border-color: rgba(60,130,255,0.9);
+  color: #3c82ff;
+}
+
+section {
+  padding-top: 1rem;
+  margin-bottom: 3rem;
+  scroll-margin-top: 120px;
+}

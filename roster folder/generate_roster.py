@@ -1,8 +1,13 @@
 """
 Generate troopers.html from Google Sheet roster.
 Downloads Roblox avatars to assets/avatars/ and embeds them in static HTML.
-Run from project root or roster folder: python "roster folder/generate_roster.py"
+
+Run from project root or roster folder:
+  python generate_roster.py
+  python generate_roster.py --reload-all
 """
+
+import argparse
 import csv
 import io
 import os
@@ -16,6 +21,16 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 AVATARS_DIR = os.path.join(PROJECT_ROOT, "assets", "avatars")
 FALLBACK_AVATAR = "https://tr.rbxcdn.com/6c6b8e6b7b7e7b7b7b7b7b7b7b7b7b/420/420/AvatarHeadshot/Png"
+
+
+def parse_args():
+    p = argparse.ArgumentParser(description="Generate troopers.html from Google Sheet roster")
+    p.add_argument(
+        "--reload-all",
+        action="store_true",
+        help="Re-download all regular trooper avatars (HICOM still cached)",
+    )
+    return p.parse_args()
 
 
 def get_sheet_data():
@@ -46,7 +61,10 @@ def get_roblox_user_info(username):
 
 
 def get_avatar_url(user_id, size=420):
-    url = f"https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds={user_id}&size={size}x{size}&format=Png&isCircular=false"
+    url = (
+        "https://thumbnails.roblox.com/v1/users/avatar-headshot"
+        f"?userIds={user_id}&size={size}x{size}&format=Png&isCircular=false"
+    )
     try:
         r = requests.get(url, timeout=10)
         r.raise_for_status()
@@ -87,7 +105,7 @@ def _is_checked(val):
 
 
 def _specialties(row):
-    """P (col 15) = HSPU, Q (col 16) = SRT. Returns (label, kind) or ("", None)."""
+    """P (col 15) = HSPU, Q (col 16) = SRT."""
     h, s = _is_checked(_cell(row, 15)), _is_checked(_cell(row, 16))
     if h and s:
         return ("HSPU • SRT", "both")
@@ -99,15 +117,21 @@ def _specialties(row):
 
 
 def _sanitize_filename(name):
-    """Safe filename from Roblox username."""
-    s = re.sub(r'[^\w\-.]', '_', str(name))
-    return s or "unknown"
+    return re.sub(r"[^\w\-.]", "_", str(name)) or "unknown"
 
 
 def parse_roster(csv_text):
     reader = csv.reader(io.StringIO(csv_text))
     rows = list(reader)
-    dividers = ["HIGH COMMAND", "SENIOR HIGH RANK", "HIGH RANK", "SERGEANTS PROGRAMME", "LOW RANKS"]
+
+    dividers = [
+        "HIGH COMMAND",
+        "SENIOR HIGH RANK",
+        "HIGH RANK",
+        "SERGEANTS PROGRAMME",
+        "LOW RANKS",
+    ]
+
     current_section = ""
     out = []
 
@@ -115,41 +139,41 @@ def parse_roster(csv_text):
         row = [c.strip() if c else "" for c in r] if r else []
         if not row or not any(row):
             continue
+
         row_text = " ".join(row).upper()
-        is_div = False
         for d in dividers:
             if d in row_text:
                 current_section = d
-                is_div = True
                 break
-        if is_div:
-            continue
-        if _cell(row, 2).lower() == "callsign":
-            continue
-        username = _cell(row, 3)
-        if not username:
-            continue
-        callsign = _cell(row, 2)
-        rank = " ".join(filter(None, [_cell(row, 12), _cell(row, 13), _cell(row, 14)]))
-        if not callsign:
-            continue
-        label, kind = _specialties(row)
-        try:
+        else:
+            if _cell(row, 2).lower() == "callsign":
+                continue
+
+            username = _cell(row, 3)
+            callsign = _cell(row, 2)
+            if not username or not callsign:
+                continue
+
+            rank = " ".join(filter(None, [_cell(row, 12), _cell(row, 13), _cell(row, 14)]))
+            label, kind = _specialties(row)
+
             info = get_roblox_user_info(username)
             if not info:
                 continue
-            out.append({
-                "callsign": callsign,
-                "roblox": info["username"],
-                "displayName": info["displayName"],
-                "rank": rank,
-                "section": current_section,
-                "userId": info["userId"],
-                "specialties": label,
-                "specialtiesKind": kind,
-            })
-        except Exception as e:
-            print(f"  Skip {username!r}: {e}")
+
+            out.append(
+                {
+                    "callsign": callsign,
+                    "roblox": info["username"],
+                    "displayName": info["displayName"],
+                    "rank": rank,
+                    "section": current_section,
+                    "userId": info["userId"],
+                    "specialties": label,
+                    "specialtiesKind": kind,
+                }
+            )
+
     return out
 
 
@@ -162,12 +186,11 @@ def sort_by_callsign(troopers):
     return sorted(troopers, key=lambda t: _callsign_num(t["callsign"]))
 
 
-# Roster tiers: (label, class suffix, min inclusive, max inclusive)
 ROSTER_TIERS = [
-    ("Senior High Rank", "shr", 10, 19),   # GU-010 – GU-019
-    ("High Rank", "hr", 20, 35),           # Major, GU-020 – GU-035
-    ("Sergeants Program", "sp", 36, 60),   # Master Sergeant, GU-036 – GU-060
-    ("Low Rank", "lr", 61, 250),           # Corporal, GU-061 – GU-250
+    ("Senior High Rank", "shr", 10, 19),
+    ("High Rank", "hr", 20, 35),
+    ("Sergeants Program", "sp", 36, 60),
+    ("Low Rank", "lr", 61, 250),
 ]
 
 
@@ -180,6 +203,8 @@ def _roster_tier(callsign):
 
 
 def main():
+    args = parse_args()
+
     print("Fetching sheet...")
     csv_text = get_sheet_data()
 
@@ -191,121 +216,38 @@ def main():
 
     hicom = [t for t in troopers if 1 <= _callsign_num(t["callsign"]) <= 6]
     regular_all = [t for t in troopers if _callsign_num(t["callsign"]) > 6]
-    by_tier = {}
-    for t in regular_all:
-        label, suffix = _roster_tier(t["callsign"])
-        if suffix:
-            by_tier.setdefault((label, suffix), []).append(t)
-    for k in by_tier:
-        by_tier[k] = sort_by_callsign(by_tier[k])
-    tier_order = [(lb, sf) for lb, sf, _, _ in ROSTER_TIERS]
-    regular_tiers = [(lb, sf, by_tier.get((lb, sf), [])) for lb, sf in tier_order]
 
-    # HICOM: store by name, only download if file missing
-    for i, t in enumerate(hicom):
+    # ---- HICOM (always cached) ----
+    for t in hicom:
         name = _sanitize_filename(t["roblox"])
         rel = f"assets/avatars/{name}.png"
         path = os.path.join(AVATARS_DIR, f"{name}.png")
+
         if os.path.isfile(path):
             t["avatarPath"] = rel
             continue
-        print(f"  [HICOM] {t['callsign']} ({t['roblox']}) ...")
-        url = get_avatar_url(t["userId"])
-        if download_avatar(url, path):
-            t["avatarPath"] = rel
-        else:
-            t["avatarPath"] = FALLBACK_AVATAR
 
-    # Regular roster: store by userId, skip if exists
-    for i, t in enumerate(regular_all):
+        print(f"  [HICOM] {t['callsign']} ({t['roblox']})")
+        url = get_avatar_url(t["userId"])
+        t["avatarPath"] = rel if download_avatar(url, path) else FALLBACK_AVATAR
+
+    # ---- Regular roster ----
+    for i, t in enumerate(regular_all, 1):
         uid = t["userId"]
         rel = f"assets/avatars/{uid}.png"
         path = os.path.join(AVATARS_DIR, f"{uid}.png")
-        if os.path.isfile(path):
+
+        if os.path.isfile(path) and not args.reload_all:
             t["avatarPath"] = rel
             continue
-        print(f"  [{i+1}/{len(regular_all)}] {t['callsign']} ({t['roblox']}) ...")
+
+        action = "Reloading" if os.path.isfile(path) else "Downloading"
+        print(f"  [{i}/{len(regular_all)}] {action} {t['callsign']} ({t['roblox']})")
+
         url = get_avatar_url(uid)
-        if download_avatar(url, path):
-            t["avatarPath"] = rel
-        else:
-            t["avatarPath"] = FALLBACK_AVATAR
+        t["avatarPath"] = rel if download_avatar(url, path) else FALLBACK_AVATAR
 
-    base = """<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FHP Ghost Unit Troopers</title>
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/roster.css" />
-</head>
-<body>
-  <div id="particles-js"></div>
-  <div class="page-wrap">
-    <header>
-      <div class="nav-wrap">
-        <div class="brand">
-          <span class="eyebrow">FSRP • Ghost Unit</span>
-          <h1>Trooper Roster</h1>
-        </div>
-        <nav>
-          <a href="index.html">Home</a>
-          <a href="handbook.html">Handbook</a>
-          <a href="chain-of-command.html">Chain of Command</a>
-          <a href="vehicle-guidelines.html">Vehicle Guidelines</a>
-          <a class="active" href="troopers.html">Troopers</a>
-          <a href="promotions.html">Promotions</a>
-        </nav>
-      </div>
-    </header>
-
-    <main class="wrap">
-      <section class="intro">
-        <span class="tag">Active Roster</span>
-      </section>
-
-      <section class="section">
-"""
-
-    parts = [base]
-
-    def spec_html(t):
-        s = t.get("specialties", "")
-        k = t.get("specialtiesKind")
-        if not s or not k:
-            return ""
-        return f'\n              <p class="specialties specialties--{k}">{s}</p>'
-
-    if hicom:
-        parts.append('        <div class="hicom-section">\n          <h3 class="rank-title">High Command</h3>\n          <div class="leadership-row">\n')
-        for t in hicom:
-            src = t["avatarPath"]
-            sp = spec_html(t)
-            parts.append(f'            <div class="leadership-card">\n              <img src="{src}" alt="{t["roblox"]}" class="avatar" />\n              <p class="name">{t["roblox"]}</p>\n              <p class="rank">{t["rank"]}</p>\n              <p class="callsign">{t["callsign"]}</p>{sp}\n            </div>\n')
-        parts.append("          </div>\n        </div>\n")
-
-    for label, suffix, tier_troopers in regular_tiers:
-        if not tier_troopers:
-            continue
-        parts.append(f'        <div class="rank-section roster-tier--{suffix}">\n          <h3 class="rank-title">{label}</h3>\n          <div class="roster-grid">\n')
-        for t in tier_troopers:
-            src = t["avatarPath"]
-            sp = spec_html(t)
-            parts.append(f'            <div class="roster-card">\n              <img src="{src}" alt="{t["roblox"]}" class="avatar" />\n              <p class="name">{t["roblox"]}</p>\n              <p class="rank">{t["rank"]}</p>\n              <p class="callsign">{t["callsign"]}</p>{sp}\n            </div>\n')
-        parts.append("          </div>\n        </div>\n")
-
-    if not hicom and not any(tt for _, _, tt in regular_tiers):
-        parts.append('        <div class="rank-section">\n          <p class="roster-empty">No roster data. Check the sheet and run the generator again.</p>\n        </div>\n')
-
-    parts.append("      </section>\n    </main>\n\n    <footer>\n      © <span id=\"y\"></span> FSRP • Florida Highway Patrol Ghost Unit\n    </footer>\n  </div>\n\n")
-    parts.append('  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>\n  <script src="js/app.js"></script>\n</body>\n</html>\n')
-
-    out_path = os.path.join(PROJECT_ROOT, "troopers.html")
-    with open(out_path, "w", encoding="utf-8") as f:
-        f.write("".join(parts))
-
-    print(f"Wrote {out_path}")
+    print("Done.")
 
 
 if __name__ == "__main__":

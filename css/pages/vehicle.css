@@ -1,0 +1,69 @@
+/* Vehicle Guidelines page */
+
+.page-vehicle .grid {
+  margin-top: 24px;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.page-vehicle .card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid var(--border);
+}
+
+.page-vehicle .card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.page-vehicle .card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.page-vehicle .card h3 {
+  margin: 16px 0 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-2);
+}
+
+.page-vehicle .card ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.guide-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.guide-nav a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(232, 168, 56, 0.5);
+  color: var(--text);
+  background: rgba(232, 168, 56, 0.1);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.guide-nav a:hover {
+  background: rgba(232, 168, 56, 0.2);
+  border-color: rgba(232, 168, 56, 0.7);
+}
+
+.section-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
