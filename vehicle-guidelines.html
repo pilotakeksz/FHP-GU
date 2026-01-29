@@ -4,398 +4,128 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FHP Ghost Unit — Vehicle Guide</title>
-
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/pages/handbook.css" />
-  <style>
-    /* COLLAPSIBLE CHECKER */
-    .checker-seamless {
-      padding: 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      box-shadow: var(--shadow);
-      margin-bottom: 32px;
-    }
-    .checker-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      margin-bottom: 12px;
-    }
-    .checker-header h4 { margin: 0; font-size: 18px; color: var(--accent);}
-    .checker-body { display: none; }
-    .checker-body .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    .sub-template.multi { grid-column: span 4; }
-    .checker-body label { display: block; margin-bottom: 6px; font-size: 14px; color: var(--accent);}
-    .checker-body select { width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 14px; appearance: none; cursor: pointer;}
-
-    /* TAG INPUT */
-    .tag-input-container { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 10px; min-height: 44px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); cursor: text; position: relative; }
-    .tag-input-container input { border: none; background: transparent; outline: none; color: var(--text); flex: 1 1 120px; min-width: 60px; font-size: 14px; }
-    .tag { display: flex; align-items: center; background: rgba(95,176,255,0.12); color: var(--accent); padding: 4px 10px; border-radius: 999px; font-size: 13px; }
-    .tag span.remove { margin-left: 6px; cursor: pointer; font-weight: bold; }
-    .suggestions ul { position: absolute; top: 100%; left: 0; right: 0; z-index: 50; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; list-style: none; margin: 4px 0 0; padding: 4px 0; max-height: 160px; overflow-y: auto; display: none;}
-    .suggestions ul li { padding: 6px 10px; cursor: pointer; color: var(--text);}
-    .suggestions ul li:hover { background: rgba(95,176,255,0.15);}
-    .checker-result { margin-top: 12px; font-weight: 600; color: var(--accent);}
-    @media(max-width:768px){ .checker-body .grid{ grid-template-columns: 1fr;} .sub-template.multi{ grid-column: span 1; } }
-  </style>
+  <link rel="stylesheet" href="css/pages/vehicle.css" />
 </head>
 <body class="page-handbook">
-<div id="particles-js"></div>
-<div class="page-wrap">
-  <header>
-    <div class="nav-wrap">
-      <div class="brand">
-        <img src="assets/logo.png" alt="FHP Ghost Unit logo" class="logo" />
-        <span class="eyebrow">FSRP • Ghost Unit</span>
-        <h1>Vehicle Guide</h1>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <header>
+      <div class="nav-wrap">
+        <div class="brand">
+          <img src="assets/logo.png" alt="FHP Ghost Unit logo" class="logo" />
+          <span class="eyebrow">FSRP • Ghost Unit</span>
+          <h1>Vehicle Guide</h1>
+        </div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="handbook.html">Handbook</a>
+          <a href="chain-of-command.html">Chain of Command</a>
+          <a class="active" href="vehicle-guidelines.html">Vehicle Guidelines</a>
+          <a href="troopers.html">Troopers</a>
+          <a href="official_media.html">Official Media</a>
+        </nav>
       </div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="handbook.html">Handbook</a>
-        <a class="active" href="#">Vehicle Guide</a>
-      </nav>
-    </div>
-  </header>
+    </header>
 
-  <main class="wrap">
-    <section class="intro">
-      <span class="tag">Department Vehicle Regulations</span>
-      <p>This document outlines all approved vehicles, accessories, and lighting configurations by division and rank. Any configuration not listed is unauthorized.</p>
-    </section>
+    <main class="wrap">
+      <section class="intro">
+        <span class="tag">Department Vehicle Regulations</span>
+        <p>This document outlines all approved vehicles, accessories, and lighting configurations by division and rank. Any configuration not listed is unauthorized.</p>
+      </section>
 
-    <div class="divider"></div>
+      <div class="divider"></div>
 
-    <!-- COLLAPSIBLE VEHICLE CONFIGURATION CHECKER -->
-    <section class="checker-seamless">
-      <div class="checker-header">
-        <h4>Vehicle Configuration Checker</h4>
-        <span id="toggleChecker">▼</span>
-      </div>
+      <section class="section" id="vehicle-checker-section">
+        <h3>Vehicle Configuration Checker</h3>
+        <div class="divider"></div>
+        <p class="muted">Select division, rank, vehicle, decal, lightbar, then ensure required additional lighting and accessories are listed. Higher ranks may use vehicles allowed for lower ranks in the same division.</p>
 
-      <div class="checker-body" id="checkerBody">
-        <div class="grid">
-          <!-- Single options -->
-          <div class="sub-template">
-            <label>Division</label>
-            <select id="division">
-              <option value="">Select Division</option>
-              <option value="none">None</option>
-              <option value="srt">SRT</option>
-              <option value="hspu">HSPU</option>
-            </select>
+        <div class="checker-seamless">
+          <div class="checker-header" id="checkerToggle" aria-expanded="true">
+            <h4>Check your configuration</h4>
+            <span class="checker-arrow" id="checkerArrow">▲</span>
           </div>
-
-          <div class="sub-template">
-            <label>Rank</label>
-            <select id="rank">
-              <option value="">Select Rank</option>
-              <option value="lr">Low Rank</option>
-              <option value="sgt">Sergeant</option>
-              <option value="hr">High Rank</option>
-              <option value="shr">Senior High Rank</option>
-              <option value="hicom">High Command</option>
-            </select>
-          </div>
-
-          <div class="sub-template">
-            <label>Car</label>
-            <select id="car">
-              <option value="">Select Car</option>
-            </select>
-          </div>
-
-          <div class="sub-template">
-            <label>Decal</label>
-            <select id="decal">
-              <option value="">Select Decal</option>
-              <option value="marked">Marked</option>
-              <option value="slicktop">Slicktop</option>
-              <option value="none">None</option>
-            </select>
-          </div>
-
-          <div class="sub-template">
-            <label>Lightbar</label>
-            <select id="lightbar">
-              <option value="">Select Lightbar</option>
-              <option value="legacy">Legacy</option>
-              <option value="visor">Visor Lights</option>
-            </select>
-          </div>
-
-          <!-- Multi options -->
-          <div class="sub-template multi">
-            <label>Accessories</label>
-            <div class="tag-input-container suggestions" id="accessoriesContainer">
-              <input type="text" placeholder="Type or select..." />
-              <ul id="accessoriesSuggestions"></ul>
+          <div class="checker-body open" id="checkerBody">
+            <div class="checker-grid">
+              <div class="checker-row checker-row--first">
+                <div class="sub-template">
+                  <label for="division">Division</label>
+                  <select id="division">
+                    <option value="">Select Division</option>
+                  </select>
+                </div>
+                <div class="sub-template">
+                  <label for="rank">Rank</label>
+                  <select id="rank">
+                    <option value="">Select Rank</option>
+                  </select>
+                </div>
+                <div class="sub-template">
+                  <label for="vehicle">Vehicle</label>
+                  <select id="vehicle">
+                    <option value="">Select Vehicle</option>
+                  </select>
+                </div>
+                <div class="sub-template">
+                  <label for="decal">Decal</label>
+                  <select id="decal">
+                    <option value="">Select Decal</option>
+                  </select>
+                </div>
+              </div>
+              <div class="checker-row checker-row--second">
+                <div class="sub-template">
+                  <label for="lightbar">Lightbar</label>
+                  <select id="lightbar">
+                    <option value="">Select Lightbar</option>
+                  </select>
+                </div>
+                <div class="sub-template sub-template--wide">
+                  <label>Additional Lighting</label>
+                  <div class="tag-input-container suggestions" id="lightingContainer">
+                    <input type="text" placeholder="Add from list or type..." />
+                    <ul id="lightingSuggestions"></ul>
+                  </div>
+                  <span class="field-hint">Required items must all be present.</span>
+                </div>
+                <div class="sub-template sub-template--wide">
+                  <label>Accessories</label>
+                  <div class="tag-input-container suggestions" id="accessoriesContainer">
+                    <input type="text" placeholder="Add from list or type..." />
+                    <ul id="accessoriesSuggestions"></ul>
+                  </div>
+                  <span class="field-hint">Required mandatory; some optional require another when selected.</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="sub-template multi">
-            <label>Additional Lighting</label>
-            <div class="tag-input-container suggestions" id="lightingContainer">
-              <input type="text" placeholder="Type or select..." />
-              <ul id="lightingSuggestions"></ul>
-            </div>
+            <p id="checkerResult" class="checker-result"></p>
           </div>
         </div>
-        <p id="result" class="checker-result"></p>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer>
-    FSRP • Florida Highway Patrol Ghost Unit
-  </footer>
-</div>
+      <div class="divider"></div>
 
-<script>
-let rulesData = {};     // division -> rank -> rules
-let optionalRules = {}; // optional => mandatory
+      <section class="section" id="vehicle-guide">
+        <h3>Table of Contents</h3>
+        <div class="divider"></div>
+        <nav class="vehicle-guide-nav" id="vehicleGuideNav" aria-label="Guide sections">
+          <!-- Filled by JS from rules.txt -->
+        </nav>
+        <div class="vehicle-guide-content" id="vehicleGuideContent">
+          <!-- Filled by JS from rules.txt -->
+        </div>
+      </section>
+    </main>
 
-async function loadRules() {
-  const res = await fetch("rules.txt");
-  const txt = await res.text();
-  parseRules(txt);
-  updateDivisionOptions();
-  checkConfig();
-}
+    <footer>
+      FSRP • Florida Highway Patrol Ghost Unit
+    </footer>
+  </div>
 
-function parseRules(txt) {
-  rulesData = {};
-  optionalRules = {};
-  const lines = txt.split("\n").map(l => l.trim()).filter(l => l && !l.startsWith("#"));
-  let currentDiv = null;
-  let currentRank = null;
-
-  lines.forEach(line => {
-    // optional rules
-    if (line.includes("=>")) {
-      const [opt, mand] = line.split("=>").map(s => s.trim());
-      optionalRules[opt] = mand;
-      return;
-    }
-
-    // new division or rank
-    if (line.includes("=")) {
-      const [left, right] = line.split("=").map(s => s.trim());
-      const divParts = left.split(" ");
-      if (divParts.length === 1) {
-        // Division only
-        currentDiv = divParts[0];
-        currentRank = null;
-        if (!rulesData[currentDiv]) rulesData[currentDiv] = {};
-      } else {
-        // Division + rank
-        currentDiv = divParts[0];
-        currentRank = divParts[1];
-        if (!rulesData[currentDiv]) rulesData[currentDiv] = {};
-        rulesData[currentDiv][currentRank] = {};
-        const parts = right.split(";");
-        parts.forEach(p => {
-          const [key, val] = p.split(":").map(s => s.trim());
-          if (key && val) rulesData[currentDiv][currentRank][key] = val.split(",").map(x => x.trim());
-        });
-      }
-      return;
-    }
-  });
-
-  // For each division, compute inheritance of cars for high ranks
-  Object.keys(rulesData).forEach(div => {
-    const ranks = Object.keys(rulesData[div]);
-    const rankOrder = ["LR","SGT","HR","SHR","HICOM","SRT","HSPU"];
-    ranks.forEach((r, i) => {
-      const cars = rulesData[div][r]["ALLOWED_CARS"] || [];
-      for (let j = i+1; j < ranks.length; j++) {
-        const higherRank = ranks[j];
-        if(!rulesData[div][higherRank]["ALLOWED_CARS"]) rulesData[div][higherRank]["ALLOWED_CARS"] = [];
-        rulesData[div][higherRank]["ALLOWED_CARS"] = [...new Set(rulesData[div][higherRank]["ALLOWED_CARS"].concat(cars))];
-      }
-    });
-  });
-}
-
-// -------------------------
-// Populate DIVISION / RANK / CAR
-// -------------------------
-const divisionSelect = document.getElementById("division");
-const rankSelect = document.getElementById("rank");
-const carSelect = document.getElementById("car");
-
-function updateDivisionOptions() {
-  divisionSelect.innerHTML = `<option value="">Select Division</option>`;
-  Object.keys(rulesData).forEach(div => {
-    const opt = document.createElement("option");
-    opt.value = div;
-    opt.textContent = div;
-    divisionSelect.appendChild(opt);
-  });
-  updateRankOptions();
-}
-
-function updateRankOptions() {
-  rankSelect.innerHTML = `<option value="">Select Rank</option>`;
-  const div = divisionSelect.value;
-  if (!div) return;
-  Object.keys(rulesData[div]).forEach(rank => {
-    const opt = document.createElement("option");
-    opt.value = rank;
-    opt.textContent = rank;
-    rankSelect.appendChild(opt);
-  });
-}
-
-function updateCars() {
-  carSelect.innerHTML = `<option value="">Select Car</option>`;
-  const div = divisionSelect.value;
-  const rank = rankSelect.value;
-  if (!div || !rank) return;
-
-  let cars = rulesData[div][rank]["ALLOWED_CARS"] || [];
-
-  // Special: HICOM can use all cars globally
-  if (div === "HICOM") {
-    let allCars = [];
-    Object.keys(rulesData).forEach(d => {
-      Object.keys(rulesData[d]).forEach(r => {
-        allCars = allCars.concat(rulesData[d][r]["ALLOWED_CARS"] || []);
-      });
-    });
-    cars = [...new Set(allCars)];
-  }
-
-  cars.forEach(c => {
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    carSelect.appendChild(opt);
-  });
-}
-
-// -------------------------
-// Check configuration
-// -------------------------
-const result = document.getElementById("result");
-function checkConfig() {
-  const div = divisionSelect.value;
-  const rank = rankSelect.value;
-  const car = carSelect.value;
-
-  if (!div || !rank || !car) {
-    result.textContent = "Select division, rank, and car.";
-    return;
-  }
-
-  const data = rulesData[div][rank];
-  let messages = [];
-
-  // CAR
-  if (!data.ALLOWED_CARS.includes(car)) messages.push(`❌ Car "${car}" is not allowed for ${div} ${rank}`);
-
-  // ACCESSORIES / LIGHTING
-  const accessories = getAccessories();
-  const lighting = getLighting();
-  (data.REQUIRED_ACCESSORIES || []).forEach(a => {
-    if (!accessories.includes(a)) messages.push(`❌ Required accessory missing: ${a}`);
-  });
-  accessories.forEach(a => {
-    if (!(data.REQUIRED_ACCESSORIES||[]).includes(a) && !(data.OPTIONAL_ACCESSORIES||[]).includes(a))
-      messages.push(`❌ Accessory "${a}" is not allowed`);
-    if (optionalRules[a]) {
-      if (!accessories.includes(optionalRules[a])) messages.push(`❌ Optional accessory "${a}" requires "${optionalRules[a]}"`);
-    }
-  });
-
-  (data.REQUIRED_LIGHTING||[]).forEach(l => {
-    if (!lighting.includes(l)) messages.push(`❌ Required lighting missing: ${l}`);
-  });
-
-  result.textContent = messages.length ? messages.join("\n") : "✅ Configuration approved.";
-}
-
-// -------------------------
-// Event listeners
-// -------------------------
-divisionSelect.addEventListener("change", () => { updateRankOptions(); updateCars(); checkConfig(); });
-rankSelect.addEventListener("change", () => { updateCars(); checkConfig(); });
-carSelect.addEventListener("change", checkConfig);
-
-// -------------------------
-// Setup tag inputs (accessories / lighting)
-// -------------------------
-function setupTagInput(containerId) {
-  const container = document.getElementById(containerId);
-  const input = container.querySelector("input");
-  const ul = container.querySelector("ul");
-  let tags = [];
-
-  function refreshTags() {
-    container.querySelectorAll(".tag").forEach(t => t.remove());
-    tags.forEach(t => {
-      const tagEl = document.createElement("span"); tagEl.className="tag"; tagEl.textContent=t;
-      const x = document.createElement("span"); x.className="remove"; x.textContent="×";
-      x.onclick = () => { tags = tags.filter(v => v!==t); refreshTags(); checkConfig(); };
-      tagEl.appendChild(x);
-      container.insertBefore(tagEl, input);
-    });
-  }
-
-  function showSuggestions(val="") {
-    ul.innerHTML = "";
-    const div = divisionSelect.value;
-    if (!div) return;
-    const options = (rulesData[div][rankSelect.value]["REQUIRED_ACCESSORIES"]||[]).concat(rulesData[div][rankSelect.value]["OPTIONAL_ACCESSORIES"]||[]);
-    const filtered = options.filter(o => !tags.includes(o) && (!val || o.toLowerCase().includes(val.toLowerCase())));
-    filtered.forEach(f => {
-      const li = document.createElement("li");
-      li.textContent = f;
-      li.onclick = () => { tags.push(f); input.value=""; ul.style.display="none"; refreshTags(); checkConfig(); };
-      ul.appendChild(li);
-    });
-    ul.style.display = filtered.length ? "block" : "none";
-  }
-
-  input.addEventListener("input",()=>showSuggestions(input.value));
-  input.addEventListener("focus",()=>showSuggestions());
-  document.addEventListener("click", e => { if(!container.contains(e.target)) ul.style.display="none"; });
-  input.addEventListener("keydown", e => {
-    if (e.key==="Enter" && input.value.trim()) { tags.push(input.value.trim()); input.value=""; ul.style.display="none"; refreshTags(); checkConfig(); e.preventDefault();}
-    else if (e.key==="Backspace" && !input.value) { tags.pop(); refreshTags(); checkConfig(); }
-  });
-  container.addEventListener("click",()=>input.focus());
-  return ()=>tags;
-}
-
-const getAccessories = setupTagInput("accessoriesContainer");
-const getLighting = setupTagInput("lightingContainer");
-
-// -------------------------
-// Load rules on page load
-// -------------------------
-loadRules();
-</script>
-<script>
-// COLLAPSIBLE CHECKER
-const toggleChecker = document.getElementById("toggleChecker");
-const checkerBody = document.getElementById("checkerBody");
-
-toggleChecker.addEventListener("click", () => {
-  const isOpen = checkerBody.style.display === "block";
-  checkerBody.style.display = isOpen ? "none" : "block";
-  toggleChecker.textContent = isOpen ? "▼" : "▲"; // arrow changes
-});
-// Optionally, start collapsed
-checkerBody.style.display = "block";
-toggleChecker.textContent = "▲";
-</script>
-</script>
-
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script src="js/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/vehicle-checker.js"></script>
 </body>
 </html>
