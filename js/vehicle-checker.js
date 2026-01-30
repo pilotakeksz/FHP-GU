@@ -388,24 +388,27 @@
   }
 
   function buildGuide() {
-    const navEl = document.getElementById("vehicleGuideNav");
+    const selectEl = document.getElementById("guideDivisionSelect");
     const contentEl = document.getElementById("vehicleGuideContent");
-    if (!navEl || !contentEl) return;
+    if (!selectEl || !contentEl) return;
 
-    navEl.innerHTML = "";
+    selectEl.innerHTML = "";
     contentEl.innerHTML = "";
 
     const divisions = Object.keys(rulesData).sort();
     divisions.forEach((div) => {
-      const divSlug = slug(div);
-      const link = document.createElement("a");
-      link.href = "#division-" + divSlug;
-      link.textContent = div;
-      navEl.appendChild(link);
+      const opt = document.createElement("option");
+      opt.value = div;
+      opt.textContent = div;
+      selectEl.appendChild(opt);
+    });
 
+    divisions.forEach((div) => {
+      const divSlug = slug(div);
       const section = document.createElement("div");
-      section.className = "vehicle-guide-section";
+      section.className = "vehicle-guide-section vehicle-guide-section--" + divSlug;
       section.id = "division-" + divSlug;
+      section.setAttribute("data-division", div);
 
       const h3 = document.createElement("h3");
       h3.textContent = "Division: " + div;
@@ -482,6 +485,20 @@
       });
 
       contentEl.appendChild(section);
+    });
+
+    function showDivision(value) {
+      contentEl.querySelectorAll(".vehicle-guide-section").forEach(function (el) {
+        el.classList.toggle("vehicle-guide-section--visible", el.getAttribute("data-division") === value);
+      });
+    }
+
+    if (divisions.length) {
+      selectEl.value = divisions[0];
+      showDivision(divisions[0]);
+    }
+    selectEl.addEventListener("change", function () {
+      showDivision(selectEl.value);
     });
   }
 

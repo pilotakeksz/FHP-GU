@@ -179,37 +179,36 @@
   }
 }
 
-/* --- Vehicle Guide (handbook-style, uniform with handbook ToC) --- */
-.vehicle-guide-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 14px;
-  margin: 12px 0 24px;
+/* --- Vehicle Guide: one division at a time + selector --- */
+.vehicle-guide-select-wrap {
+  margin: 14px 0 20px;
 }
-.vehicle-guide-nav a {
-  display: inline-flex;
-  align-items: center;
+.vehicle-guide-select-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.vehicle-guide-select {
+  min-width: 160px;
+  min-height: 44px;
   padding: 10px 14px;
   border-radius: 10px;
+  border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--text);
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid var(--border);
-  text-decoration: none;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
-}
-.vehicle-guide-nav a:hover {
-  background: rgba(95,176,255,0.12);
-  border-color: rgba(95,176,255,0.35);
-  color: var(--text);
+  appearance: none;
+  cursor: pointer;
 }
 
 .vehicle-guide-content {
   margin-top: clamp(12px, 3vw, 20px);
 }
 .vehicle-guide-section {
+  display: none;
   margin-bottom: clamp(24px, 5vw, 36px);
   padding: clamp(16px, 4vw, 24px);
   border-radius: clamp(12px, 2.5vw, 16px);
@@ -217,10 +216,36 @@
   background: var(--surface);
   scroll-margin-top: clamp(80px, 15vw, 120px);
 }
+.vehicle-guide-section--visible {
+  display: block;
+}
+/* HSPU: blue highlight */
+.vehicle-guide-section--hspu {
+  background: linear-gradient(145deg, rgba(95, 176, 255, 0.14), var(--surface));
+  border-color: rgba(95, 176, 255, 0.45);
+}
+.vehicle-guide-section--hspu h3 {
+  color: #5fb0ff;
+}
+/* Normal: faint bright yellow */
+.vehicle-guide-section--normal {
+  background: linear-gradient(145deg, rgba(255, 235, 180, 0.18), var(--surface));
+  border-color: rgba(255, 220, 140, 0.4);
+}
+.vehicle-guide-section--normal h3 {
+  color: #f5e6a8;
+}
+/* SRT: red highlight */
+.vehicle-guide-section--srt {
+  background: linear-gradient(145deg, rgba(255, 120, 100, 0.14), var(--surface));
+  border-color: rgba(255, 90, 80, 0.45);
+}
+.vehicle-guide-section--srt h3 {
+  color: #ff9a8a;
+}
 .vehicle-guide-section h3 {
   margin: 0 0 clamp(8px, 2vw, 12px);
   font-size: clamp(16px, 2.5vw, 18px);
-  color: var(--accent);
 }
 .vehicle-guide-section .divider {
   margin: clamp(10px, 2vw, 14px) 0;

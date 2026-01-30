@@ -1,3 +1,8 @@
+/* --- Handbook sections: scroll margin so ToC links don't land under sticky header --- */
+.section[id] {
+  scroll-margin-top: clamp(88px, 14vw, 110px);
+}
+
 /* --- Handbook Table of Contents (jump buttons) --- */
 .handbook-nav {
   display: flex;

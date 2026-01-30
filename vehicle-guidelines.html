@@ -108,11 +108,15 @@
       <div class="divider"></div>
 
       <section class="section" id="vehicle-guide">
-        <h3>Table of Contents</h3>
+        <h3>Division guide</h3>
         <div class="divider"></div>
-        <nav class="vehicle-guide-nav" id="vehicleGuideNav" aria-label="Guide sections">
-          <!-- Filled by JS from rules.txt -->
-        </nav>
+        <p class="muted">Select a division to view its vehicle rules by rank.</p>
+        <div class="vehicle-guide-select-wrap">
+          <label for="guideDivisionSelect" class="vehicle-guide-select-label">Division</label>
+          <select id="guideDivisionSelect" class="vehicle-guide-select" aria-label="Select division to view">
+            <!-- Filled by JS -->
+          </select>
+        </div>
         <div class="vehicle-guide-content" id="vehicleGuideContent">
           <!-- Filled by JS from rules.txt -->
         </div>
