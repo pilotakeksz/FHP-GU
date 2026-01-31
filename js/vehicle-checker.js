@@ -148,7 +148,7 @@
       },
       SGTP: {
         ALLOWED_CARS: [
-          "Bullhorn Pueblo Pursuit 2018",
+          "Bullhorn Pueblo Pursuit 2020",
           "Falcon Interceptor Utility 2019",
           "Falcon Interceptor Utility 2013"
         ],
