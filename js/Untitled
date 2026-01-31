@@ -1,0 +1,94 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const GALLERY_JSON_URL = 'data/gallery.json';
+
+  let currentIndex = 0;
+  let images = [];
+  let credits = [];
+
+  const container = document.getElementById('carouselContainer');
+  const wrapper = document.getElementById('carouselWrapper');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const creditsList = document.getElementById('creditsList');
+
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+
+  function updateButtons() {
+    prevBtn.style.backgroundColor = currentIndex === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.5)';
+    nextBtn.style.backgroundColor = currentIndex === images.length - 1 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.5)';
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === images.length - 1;
+  }
+
+  function showImage(index) {
+    if (index < 0 || index >= images.length) return;
+    currentIndex = index;
+
+    // Hide all images first
+    images.forEach(img => img.style.display = 'none');
+    // Show current image
+    const img = images[currentIndex];
+    img.style.display = 'block';
+
+    // Resize to max possible
+    const availableHeight = window.innerHeight - (header ? header.offsetHeight : 0) - (footer ? footer.offsetHeight : 0) - 20; // padding
+    const aspect = img.naturalWidth / img.naturalHeight;
+
+    let width = container.clientWidth;
+    let height = width / aspect;
+    if (height > availableHeight) {
+      height = availableHeight;
+      width = height * aspect;
+    }
+
+    img.style.width = `${width}px`;
+    img.style.height = `${height}px`;
+
+    // Show credits
+    if (credits[currentIndex]) {
+      creditsList.innerHTML = `<p>${credits[currentIndex]}</p>`;
+    } else {
+      creditsList.innerHTML = '';
+    }
+
+    updateButtons();
+  }
+
+  prevBtn.onclick = () => showImage(currentIndex - 1);
+  nextBtn.onclick = () => showImage(currentIndex + 1);
+
+  window.addEventListener('resize', () => showImage(currentIndex));
+
+  // Load gallery
+  fetch(GALLERY_JSON_URL)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      if (!data || data.length === 0) {
+        wrapper.innerHTML = '<p>No images available.</p>';
+        return;
+      }
+
+      // Create images
+      data.forEach(imgData => {
+        const img = document.createElement('img');
+        img.src = `assets/gallery/gallery-${imgData.id}.png`;
+        img.alt = imgData.caption || 'Gallery Image';
+        img.style.display = 'none';
+        img.style.objectFit = 'contain';
+        wrapper.appendChild(img);
+        images.push(img);
+        credits.push(imgData.credit || imgData.caption || '');
+      });
+
+      // Show first image
+      showImage(0);
+    })
+    .catch(err => {
+      console.error('Error loading gallery:', err);
+      wrapper.innerHTML = '<p>Error loading gallery.</p>';
+    });
+});
