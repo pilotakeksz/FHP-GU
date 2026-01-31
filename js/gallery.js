@@ -1,162 +1,138 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const GALLERY_JSON_URL = 'data/gallery.json';
-  const SLIDE_INTERVAL = 5000; // 5 seconds
-
-  let currentIndex = 0;
-  let images = [];
-  let captions = [];
-  let credits = [];
-  let slideshowTimer;
+  const DATA_URL = 'data/gallery.json';
+  const IMAGE_PATH = 'assets/gallery/gallery-';
+  const INTERVAL = 6000; // slideshow interval
 
   const container = document.getElementById('carouselContainer');
   const wrapper = document.getElementById('carouselWrapper');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
-
   const header = document.querySelector('header');
   const footer = document.querySelector('footer');
 
-  // Overlay for caption + credit
-  let overlay = document.getElementById('creditsOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'creditsOverlay';
-    Object.assign(overlay.style, {
-      position: 'absolute',
-      bottom: '0',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      color: 'white',
-      backgroundColor: 'rgba(0,0,0,0.6)',
-      padding: '5px 10px',
-      fontSize: '14px',
-      textAlign: 'center',
-      maxWidth: '90%',
-      borderRadius: '4px',
-      boxSizing: 'border-box',
-      opacity: '0',
-      transition: 'opacity 0.5s ease'
-    });
-    container.style.position = 'relative'; // ensure overlay positions correctly
-    container.appendChild(overlay);
-  }
+  let data = [];
+  let index = 0;
+  let timer = null;
+  let paused = false;
 
-  // Style wrapper to center images
-  Object.assign(wrapper.style, {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    position: 'relative',
-    overflow: 'hidden'
+  // ---- single image element ----
+  const img = document.createElement('img');
+  Object.assign(img.style, {
+    display: 'block',
+    margin: '0 auto',
+    objectFit: 'contain',
+    opacity: '0',
+    transition: 'opacity 0.8s ease'
   });
+  wrapper.innerHTML = '';
+  wrapper.appendChild(img);
 
-  function updateButtons() {
-    prevBtn.style.backgroundColor = currentIndex === 0 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.5)';
-    nextBtn.style.backgroundColor = currentIndex === images.length - 1 ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0.5)';
-    prevBtn.disabled = currentIndex === 0;
-    nextBtn.disabled = currentIndex === images.length - 1;
+  // ---- overlay ----
+  const overlay = document.createElement('div');
+  Object.assign(overlay.style, {
+    position: 'absolute',
+    bottom: '12px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    background: 'rgba(0,0,0,0.65)',
+    color: '#fff',
+    padding: '6px 12px',
+    fontSize: '14px',
+    borderRadius: '4px',
+    maxWidth: '90%',
+    textAlign: 'center',
+    pointerEvents: 'none',
+    opacity: '0',
+    transition: 'opacity 0.5s ease'
+  });
+  container.style.position = 'relative';
+  container.appendChild(overlay);
+
+  function availableHeight() {
+    return window.innerHeight
+      - (header?.offsetHeight || 0)
+      - (footer?.offsetHeight || 0)
+      - 40;
   }
 
-  function resizeImage(img) {
-    const availableHeight = window.innerHeight -
-      (header ? header.offsetHeight : 0) -
-      (footer ? footer.offsetHeight : 0) - 40; // padding
-    const availableWidth = container.clientWidth;
+  function resize() {
+    if (!img.naturalWidth) return;
 
-    const aspect = img.naturalWidth / img.naturalHeight;
+    const maxH = availableHeight();
+    const maxW = container.clientWidth;
+    const ratio = img.naturalWidth / img.naturalHeight;
 
-    let width = availableWidth;
-    let height = width / aspect;
+    let w = maxW;
+    let h = w / ratio;
 
-    if (height > availableHeight) {
-      height = availableHeight;
-      width = height * aspect;
+    if (h > maxH) {
+      h = maxH;
+      w = h * ratio;
     }
 
-    img.style.width = `${width}px`;
-    img.style.height = `${height}px`;
+    img.style.width = `${w}px`;
+    img.style.height = `${h}px`;
   }
 
-  function showImage(index) {
-    if (index < 0 || index >= images.length) return;
-    currentIndex = index;
+  function show(i) {
+    if (!data.length) return;
+    index = (i + data.length) % data.length;
 
-    images.forEach((img, i) => {
-      if (i === currentIndex) {
-        img.style.display = 'block';
-        img.style.opacity = '0';
-        resizeImage(img);
-        requestAnimationFrame(() => {
-          img.style.transition = 'opacity 1s ease';
-          img.style.opacity = '1';
-        });
-      } else {
-        img.style.transition = 'opacity 0.5s ease';
-        img.style.opacity = '0';
-        setTimeout(() => { img.style.display = 'none'; }, 500);
-      }
-    });
+    img.style.opacity = '0';
 
-    // Show overlay
-    const captionText = captions[currentIndex] ? `<strong>${captions[currentIndex]}</strong>` : '';
-    const creditText = credits[currentIndex] ? `<span>${credits[currentIndex]}</span>` : '';
-    overlay.innerHTML = `${captionText}${captionText && creditText ? ' - ' : ''}${creditText}`;
+    const entry = data[index];
+    const src = `${IMAGE_PATH}${entry.id}.png`;
+
+    img.onload = () => {
+      resize();
+      requestAnimationFrame(() => {
+        img.style.opacity = '1';
+        overlay.style.opacity = '1';
+      });
+    };
+    img.src = src;
+
+    overlay.innerHTML = `
+      ${entry.caption ? `<strong>${entry.caption}</strong>` : ''}
+      ${entry.credit ? `<div style="font-size:12px;opacity:.8">${entry.credit}</div>` : ''}
+    `;
     overlay.style.opacity = '0';
-    setTimeout(() => { overlay.style.opacity = '1'; }, 200);
-
-    updateButtons();
   }
 
-  function nextSlide() {
-    const nextIndex = (currentIndex + 1) % images.length;
-    showImage(nextIndex);
-  }
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
 
   function startSlideshow() {
-    slideshowTimer = setInterval(nextSlide, SLIDE_INTERVAL);
+    stopSlideshow();
+    timer = setInterval(() => {
+      if (!paused) next();
+    }, INTERVAL);
   }
 
   function stopSlideshow() {
-    clearInterval(slideshowTimer);
+    if (timer) clearInterval(timer);
   }
 
-  prevBtn.onclick = () => { stopSlideshow(); showImage(currentIndex - 1); startSlideshow(); };
-  nextBtn.onclick = () => { stopSlideshow(); showImage(currentIndex + 1); startSlideshow(); };
-  window.addEventListener('resize', () => showImage(currentIndex));
+  // ---- Button events ----
+  prevBtn.onclick = () => { stopSlideshow(); prev(); startSlideshow(); };
+  nextBtn.onclick = () => { stopSlideshow(); next(); startSlideshow(); };
 
-  // Load gallery
-  fetch(GALLERY_JSON_URL)
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      if (!data || data.length === 0) {
-        wrapper.innerHTML = '<p>No images available.</p>';
-        return;
-      }
+  // ---- Hover pause ----
+  container.addEventListener('mouseenter', () => paused = true);
+  container.addEventListener('mouseleave', () => paused = false);
 
-      data.forEach(imgData => {
-        const img = document.createElement('img');
-        img.src = `assets/gallery/gallery-${imgData.id}.png`;
-        img.alt = imgData.caption || 'Gallery Image';
-        img.style.display = 'none';
-        img.style.objectFit = 'contain';
-        img.style.maxWidth = '100%';
-        img.style.maxHeight = '100%';
-        wrapper.appendChild(img);
-        images.push(img);
+  window.addEventListener('resize', resize);
 
-        captions.push(imgData.caption || '');
-        credits.push(imgData.credit || '');
-      });
-
-      showImage(0);
+  // ---- Load gallery ----
+  fetch(DATA_URL)
+    .then(r => r.json())
+    .then(json => {
+      data = json;
+      show(0);
       startSlideshow();
     })
     .catch(err => {
-      console.error('Error loading gallery:', err);
-      wrapper.innerHTML = '<p>Error loading gallery.</p>';
+      console.error(err);
+      wrapper.innerHTML = '<p style="color:red">Gallery failed to load.</p>';
     });
 });
