@@ -1,18 +1,10 @@
 /**
  * FHP Ghost Unit — Vehicle Configuration Checker
- * Validates: Division, Rank, Vehicle, Decal, Lightbar, Additional Lighting, Accessories.
- * Higher ranks inherit vehicles from lower ranks in the same division.
- * Optional accessories may require another (e.g. ALPR => Pushbar).
+ * Fully hard-coded for HSPU and S.R.T. with rank inheritance
  */
 
 (function () {
   "use strict";
-
-  const RANK_ORDER = ["LR", "SGT", "HR", "SHR", "HICOM"];
-  let rulesData = {};
-  let optionalRules = {};
-  let currentDivision = null;
-  let currentRank = null;
 
   const divisionSelect = document.getElementById("division");
   const rankSelect = document.getElementById("rank");
@@ -23,498 +15,245 @@
   const checkerBody = document.getElementById("checkerBody");
   const checkerToggle = document.getElementById("checkerToggle");
   const checkerArrow = document.getElementById("checkerArrow");
+  const vehicleGuideContent = document.getElementById("vehicleGuideContent");
 
   if (!divisionSelect || !rankSelect) return;
 
-  function parseKeyValue(right) {
-    const out = {};
-    const parts = right.split(";").map((s) => s.trim()).filter(Boolean);
-    parts.forEach((p) => {
-      const colon = p.indexOf(":");
-      if (colon === -1) return;
-      const key = p.slice(0, colon).trim();
-      const val = p.slice(colon + 1).trim();
-      out[key] = val.split(",").map((x) => x.trim()).filter(Boolean);
-    });
-    return out;
-  }
+  const RANK_ORDER = ["Probationary Officer","Officer First+","Senior Officer+","Head Officer+","Director+",
+                      "Probationary Operative+","Operative+","Senior Operative+"];
 
-  function parseRules(txt) {
-    rulesData = {};
-    optionalRules = {};
-    currentDivision = null;
-    currentRank = null;
-    const lines = txt.split("\n").map((l) => l.trim());
-
-    lines.forEach((line) => {
-      if (!line || line.startsWith("#")) {
-        const divMatch = line.match(/#\s*DIVISION\s*:?\s*(\w+)/i);
-        if (divMatch) currentDivision = divMatch[1];
-        return;
+  const rulesData = {
+    "HSPU": {
+      "Probationary Officer": {
+        vehicles: ["Bullhorn Prancer Pursuit 2015 (Probationary Officer, officer+)"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Small Siderunners"],
+        accessories: ["Pushbar","Wraparound Bar","Grappler","ALPR"],
+        antennas: ["5G Antenna (Right)","Long Range Antenna (Center)","Low Profile Antenna (Front Center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Officer First+": {
+        vehicles: ["Chevron Amigo ZLR 2011 (Officer First+, Application)"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Small Siderunners"],
+        accessories: ["Pushbar","Wraparound Bar","Grappler","ALPR"],
+        antennas: ["5G Antenna (Right)","Long Range Antenna (Center)","Low Profile Antenna (Front Center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Senior Officer+": {
+        vehicles: ["Bullhorn Prancer Pursuit 2011 (Senior Officer+, Application)"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Small Siderunners"],
+        accessories: ["Pushbar","Wraparound Bar","Grappler","ALPR"],
+        antennas: ["5G Antenna (Right)","Long Range Antenna (Center)","Low Profile Antenna (Front Center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Head Officer+": {
+        vehicles: ["Falcon Stallion 350 2015 (Head Officer+, Application)"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Small Siderunners"],
+        accessories: ["Pushbar","Wraparound Bar","Grappler","ALPR"],
+        antennas: ["5G Antenna (Right)","Long Range Antenna (Center)","Low Profile Antenna (Front Center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Director+": {
+        vehicles: ["Bullhorn Prancer Pursuit Widebody 2020 (Director+)"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Small Siderunners"],
+        accessories: ["Pushbar","Wraparound Bar","Grappler","ALPR"],
+        antennas: ["5G Antenna (Right)","Long Range Antenna (Center)","Low Profile Antenna (Front Center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
       }
-
-      if (line.includes("=>")) {
-        const [opt, mand] = line.split("=>").map((s) => s.trim());
-        optionalRules[opt] = mand;
-        return;
+    },
+    "SRT": {
+      "Probationary Operative+": {
+        vehicles: ["2008 Chevlon Camion PPV","2015 Bullhorn Prancer Pursuit","Equipment Trailer"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights"],
+        accessories: ["ALPR","Trailer Hitch"],
+        antennas: ["5G Antenna - Right","Low Profile Antenna - Front Center","Long Range Antenna - Rear Center/Center"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Operative+": {
+        vehicles: ["2019 Chevlon Plotoro"],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights"],
+        accessories: ["ALPR","Trailer Hitch"],
+        antennas: ["5G Antenna - Right","Low Profile Antenna - Front Center","Long Range Antenna - Rear Center/Center"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
+      },
+      "Senior Operative+": {
+        vehicles: [
+          "2020 Emergency Services Falcon Advance+",
+          "2011 SWAT Truck (only if more than 4 units active and Chief+ permission)"
+        ],
+        mainLights: ["Visor Lights","Legacy Lightbar"],
+        rearLights: ["Rear Window Lights"],
+        additionalLighting: ["Side Window Lights","Plate Lights","Front Bumper Lights (ES Falcon Advance+)","Fender Lights","Fog Lights","Small Siderunners","Siderunners (SO+)","Rear Light Stick"],
+        accessories: ["ALPR","Trailer Hitch","LED Spotlights","Flood Lights (ES Falcon Advance+)"],
+        antennas: ["5G Antenna - Right (Front Right on ES Falcon Advance+)","Low Profile Antenna - Front Center","Long Range Antenna - Rear Center/Center (Rear on ES Falcon Advance+)","Long Range Antenna (rear Center/ trunk center)"],
+        spotlights: ["Led Spotlight","Passenger Spotlight (Optional)"]
       }
+    }
+  };
 
-      const rankMatch = line.match(/^(\w+)\s*=\s*(.*)$/);
-      if (rankMatch) {
-        const rank = rankMatch[1];
-        const right = rankMatch[2];
-        if (!currentDivision) currentDivision = "Normal";
-        if (!rulesData[currentDivision]) rulesData[currentDivision] = {};
-        currentRank = rank;
-        rulesData[currentDivision][rank] = rulesData[currentDivision][rank] || {};
-        Object.assign(rulesData[currentDivision][rank], parseKeyValue(right));
-        return;
-      }
+  const optionalRules = {"ALPR":"Pushbar","Trailer Hitch":null}; // Trailer Hitch optional
 
-      const keyMatch = line.match(/^([A-Z_]+):(.*)$/);
-      if (keyMatch && currentDivision && currentRank) {
-        const key = keyMatch[1];
-        const right = keyMatch[2];
-        const parsed = parseKeyValue(key + ":" + right);
-        Object.keys(parsed).forEach((k) => {
-          rulesData[currentDivision][currentRank][k] = parsed[k];
-        });
-      }
-    });
+  /** ------------------ HELPER: INHERIT VEHICLES ------------------ **/
 
-    inheritCarsByRank();
-  }
-
-  function inheritCarsByRank() {
-    Object.keys(rulesData).forEach((div) => {
-      const ranks = Object.keys(rulesData[div]);
-      const order = RANK_ORDER.filter((r) => ranks.includes(r));
-      order.forEach((r, i) => {
-        const cars = rulesData[div][r].ALLOWED_CARS || [];
-        for (let j = i + 1; j < order.length; j++) {
-          const higher = order[j];
-          if (!rulesData[div][higher].ALLOWED_CARS) rulesData[div][higher].ALLOWED_CARS = [];
-          const set = new Set([
-            ...(rulesData[div][higher].ALLOWED_CARS || []),
-            ...cars
-          ]);
-          rulesData[div][higher].ALLOWED_CARS = Array.from(set);
+  function inheritVehicles() {
+    Object.keys(rulesData).forEach(div=>{
+      const ranks=Object.keys(rulesData[div]);
+      const order=RANK_ORDER.filter(r=>ranks.includes(r));
+      for(let i=0;i<order.length;i++){
+        const lowerVehicles=[...rulesData[div][order[i]].vehicles];
+        for(let j=i+1;j<order.length;j++){
+          rulesData[div][order[j]].vehicles=[...new Set([...rulesData[div][order[j]].vehicles,...lowerVehicles])];
         }
-      });
-      ranks.filter((r) => !RANK_ORDER.includes(r)).forEach((r) => {
-        rulesData[div][r].ALLOWED_CARS = rulesData[div][r].ALLOWED_CARS || [];
-      });
+      }
     });
   }
 
-  function updateDivisionOptions() {
-    divisionSelect.innerHTML = '<option value="">Select Division</option>';
-    Object.keys(rulesData).sort().forEach((div) => {
-      const opt = document.createElement("option");
-      opt.value = div;
-      opt.textContent = div;
-      divisionSelect.appendChild(opt);
-    });
-    updateRankOptions();
-  }
+  inheritVehicles();
 
-  function updateRankOptions() {
-    rankSelect.innerHTML = '<option value="">Select Rank</option>';
-    const div = divisionSelect.value;
-    if (!div || !rulesData[div]) return;
-    Object.keys(rulesData[div]).sort((a, b) => {
-      const ai = RANK_ORDER.indexOf(a);
-      const bi = RANK_ORDER.indexOf(b);
-      if (ai !== -1 && bi !== -1) return ai - bi;
-      return String(a).localeCompare(b);
-    }).forEach((rank) => {
-      const opt = document.createElement("option");
-      opt.value = rank;
-      opt.textContent = rank;
-      rankSelect.appendChild(opt);
-    });
-    updateVehicleOptions();
-    updateDecalOptions();
-    updateLightbarOptions();
-  }
-
-  function updateVehicleOptions() {
-    vehicleSelect.innerHTML = '<option value="">Select Vehicle</option>';
-    const div = divisionSelect.value;
-    const rank = rankSelect.value;
-    if (!div || !rank || !rulesData[div] || !rulesData[div][rank]) return;
-    const cars = rulesData[div][rank].ALLOWED_CARS || [];
-    cars.forEach((c) => {
-      const opt = document.createElement("option");
-      opt.value = c;
-      opt.textContent = c;
-      vehicleSelect.appendChild(opt);
-    });
-  }
-
-  function updateDecalOptions() {
-    decalSelect.innerHTML = '<option value="">Select Decal</option>';
-    const div = divisionSelect.value;
-    const rank = rankSelect.value;
-    if (!div || !rank || !rulesData[div] || !rulesData[div][rank]) return;
-    const decals = rulesData[div][rank].DECALS || [];
-    decals.forEach((d) => {
-      const opt = document.createElement("option");
-      opt.value = d;
-      opt.textContent = d;
-      decalSelect.appendChild(opt);
-    });
-  }
-
-  function updateLightbarOptions() {
-    lightbarSelect.innerHTML = '<option value="">Select Lightbar</option>';
-    const div = divisionSelect.value;
-    const rank = rankSelect.value;
-    if (!div || !rank || !rulesData[div] || !rulesData[div][rank]) return;
-    const bars = rulesData[div][rank].LIGHTBAR || [];
-    bars.forEach((b) => {
-      const opt = document.createElement("option");
-      opt.value = b;
-      opt.textContent = b;
-      lightbarSelect.appendChild(opt);
-    });
-  }
-
-  function checkConfig() {
-    const div = divisionSelect.value;
-    const rank = rankSelect.value;
-    const vehicle = vehicleSelect.value;
-    const decal = decalSelect.value;
-    const lightbar = lightbarSelect.value;
-    const lighting = getLighting();
-    const accessories = getAccessories();
-
-    if (!div || !rank) {
-      checkerResult.textContent = "Select division and rank.";
-      return;
-    }
-
-    const data = rulesData[div] && rulesData[div][rank];
-    if (!data) {
-      checkerResult.textContent = "No rules for this division and rank.";
-      return;
-    }
-
-    const messages = [];
-
-    if (vehicle) {
-      const allowed = data.ALLOWED_CARS || [];
-      if (!allowed.includes(vehicle)) {
-        messages.push("Vehicle \"" + vehicle + "\" is not allowed for " + div + " " + rank + ".");
-      }
-    } else {
-      messages.push("Select a vehicle.");
-    }
-
-    if (data.DECALS && data.DECALS.length) {
-      if (!decal) {
-        messages.push("Select a decal.");
-      } else if (!data.DECALS.includes(decal)) {
-        messages.push("Decal \"" + decal + "\" is not allowed for this division/rank.");
-      }
-    }
-
-    if (data.LIGHTBAR && data.LIGHTBAR.length) {
-      if (!lightbar) {
-        messages.push("Select a lightbar.");
-      } else if (!data.LIGHTBAR.includes(lightbar)) {
-        messages.push("Lightbar \"" + lightbar + "\" is not allowed for this division/rank.");
-      }
-    }
-
-    const allowedLighting = data.REQUIRED_LIGHTING || [];
-    allowedLighting.forEach((l) => {
-      if (!lighting.includes(l)) {
-        messages.push("Required additional lighting missing: " + l + ".");
-      }
-    });
-    lighting.forEach((l) => {
-      if (!allowedLighting.includes(l)) {
-        messages.push("Additional lighting \"" + l + "\" is not allowed for this rank.");
-      }
-    });
-
-    const requiredAcc = data.REQUIRED_ACCESSORIES || [];
-    const optionalAcc = data.OPTIONAL_ACCESSORIES || [];
-    const allowedAcc = [...requiredAcc, ...optionalAcc];
-
-    requiredAcc.forEach((a) => {
-      if (!accessories.includes(a)) {
-        messages.push("Required accessory missing: " + a + ".");
-      }
-    });
-
-    accessories.forEach((a) => {
-      if (!allowedAcc.includes(a)) {
-        messages.push("Accessory \"" + a + "\" is not allowed for this rank.");
-      }
-      if (optionalRules[a] && !accessories.includes(optionalRules[a])) {
-        messages.push("Accessory \"" + a + "\" requires \"" + optionalRules[a] + "\" to be selected.");
-      }
-    });
-
-    if (messages.length) {
-      checkerResult.textContent = messages.join(" ");
-      checkerResult.classList.add("error");
-      checkerResult.classList.remove("ok");
-    } else {
-      checkerResult.textContent = "Configuration approved.";
-      checkerResult.classList.add("ok");
-      checkerResult.classList.remove("error");
-    }
-  }
-
-  function setupTagInput(containerId, kind) {
-    const container = document.getElementById(containerId);
-    if (!container) return function () { return []; };
-    const input = container.querySelector("input");
-    const ul = container.querySelector("ul");
-    let tags = [];
-    const isLighting = kind === "lighting";
-
-    function refreshTags() {
-      container.querySelectorAll(".tag").forEach((t) => t.remove());
-      tags.forEach((t) => {
-        const tagEl = document.createElement("span");
-        tagEl.className = "tag";
-        tagEl.textContent = t;
-        const x = document.createElement("span");
-        x.className = "remove";
-        x.textContent = "×";
-        x.onclick = function () {
-          tags = tags.filter((v) => v !== t);
-          refreshTags();
-          checkConfig();
-        };
+  /** ------------------ TAG INPUTS ------------------ **/
+  function setupTagInput(containerId){
+    const container=document.getElementById(containerId);
+    if(!container) return ()=>[];
+    const input=container.querySelector("input");
+    let tags=[];
+    function refresh(){
+      container.querySelectorAll(".tag").forEach(t=>t.remove());
+      tags.forEach(t=>{
+        const tagEl=document.createElement("span");
+        tagEl.className="tag"; tagEl.textContent=t;
+        const x=document.createElement("span"); x.className="remove"; x.textContent="×";
+        x.onclick=()=>{ tags=tags.filter(v=>v!==t); refresh(); checkConfig(); };
         tagEl.appendChild(x);
-        container.insertBefore(tagEl, input);
+        container.insertBefore(tagEl,input);
       });
     }
-
-    function getOptions() {
-      const div = divisionSelect.value;
-      const rank = rankSelect.value;
-      if (!div || !rank || !rulesData[div] || !rulesData[div][rank]) return [];
-      const data = rulesData[div][rank];
-      if (isLighting) return data.REQUIRED_LIGHTING || [];
-      return [...(data.REQUIRED_ACCESSORIES || []), ...(data.OPTIONAL_ACCESSORIES || [])];
-    }
-
-    function showSuggestions(val) {
-      if (!ul) return;
-      ul.innerHTML = "";
-      const options = getOptions();
-      const filtered = options.filter(
-        (o) => !tags.includes(o) && (!val || o.toLowerCase().includes((val || "").toLowerCase()))
-      );
-      filtered.forEach((f) => {
-        const li = document.createElement("li");
-        li.textContent = f;
-        li.onclick = function () {
-          tags.push(f);
-          input.value = "";
-          refreshTags();
-          checkConfig();
-          input.focus();
-          setTimeout(function () { showSuggestions(""); }, 0);
-        };
-        ul.appendChild(li);
-      });
-      ul.style.display = filtered.length ? "block" : "none";
-    }
-
-    input.addEventListener("input", function () { showSuggestions(input.value); });
-    input.addEventListener("focus", function () { showSuggestions(input.value); });
-    document.addEventListener("click", function (e) {
-      if (!container.contains(e.target)) ul.style.display = "none";
+    input.addEventListener("keydown",(e)=>{
+      if(e.key==="Enter"&&input.value.trim()){ tags.push(input.value.trim()); input.value=""; refresh(); checkConfig(); e.preventDefault(); }
+      else if(e.key==="Backspace"&&!input.value&&tags.length){ tags.pop(); refresh(); checkConfig(); }
     });
-    input.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && input.value.trim()) {
-        var added = input.value.trim();
-        tags.push(added);
-        input.value = "";
-        refreshTags();
-        checkConfig();
-        input.focus();
-        setTimeout(function () { showSuggestions(""); }, 0);
-        e.preventDefault();
-      } else if (e.key === "Backspace" && !input.value && tags.length) {
-        tags.pop();
-        refreshTags();
-        checkConfig();
-      }
-    });
-    container.addEventListener("click", function (e) {
-      if (e.target === container || e.target === input) input.focus();
-      if (e.target === container || e.target === input) showSuggestions(input.value);
-    });
-
-    return function () { return tags.slice(); };
+    return ()=>tags.slice();
   }
 
-  const getLighting = setupTagInput("lightingContainer", "lighting");
-  const getAccessories = setupTagInput("accessoriesContainer", "accessories");
+  const getLighting=setupTagInput("lightingContainer");
+  const getAccessories=setupTagInput("accessoriesContainer");
 
-  divisionSelect.addEventListener("change", function () {
-    updateRankOptions();
-    checkConfig();
-  });
-  rankSelect.addEventListener("change", function () {
-    updateVehicleOptions();
-    updateDecalOptions();
-    updateLightbarOptions();
-    checkConfig();
-  });
-  vehicleSelect.addEventListener("change", checkConfig);
-  decalSelect.addEventListener("change", checkConfig);
-  lightbarSelect.addEventListener("change", checkConfig);
+  /** ------------------ POPULATE DROPDOWNS ------------------ **/
 
-  if (checkerToggle && checkerBody && checkerArrow) {
-    checkerToggle.addEventListener("click", function () {
-      const isOpen = checkerBody.classList.contains("open");
-      checkerBody.classList.toggle("open", !isOpen);
-      checkerArrow.textContent = isOpen ? "▼" : "▲";
-      checkerToggle.setAttribute("aria-expanded", !isOpen);
-    });
+  function populateDivisions(){
+    divisionSelect.innerHTML="<option value=''>Select Division</option>";
+    Object.keys(rulesData).forEach(d=>{ const opt=document.createElement("option"); opt.value=d; opt.textContent=d; divisionSelect.appendChild(opt); });
   }
 
-  function slug(str) {
-    return String(str).toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  function populateRanks(){
+    const div=divisionSelect.value;
+    rankSelect.innerHTML="<option value=''>Select Rank</option>";
+    if(!div) return;
+    Object.keys(rulesData[div]).forEach(r=>{
+      const opt=document.createElement("option"); opt.value=r; opt.textContent=r; rankSelect.appendChild(opt);
+    });
+    vehicleSelect.innerHTML="<option value=''>Select Vehicle</option>";
+    lightbarSelect.innerHTML="<option value=''>Select Lightbar</option>";
+    decalSelect.innerHTML="<option value='Black Decal'>Black Decal</option>";
   }
 
-  function buildGuide() {
-    const selectEl = document.getElementById("guideDivisionSelect");
-    const contentEl = document.getElementById("vehicleGuideContent");
-    if (!selectEl || !contentEl) return;
+  function updateVehiclesAndLightbar(){
+    const div=divisionSelect.value; const rank=rankSelect.value;
+    if(!div || !rank) return;
+    const data=rulesData[div][rank];
+    vehicleSelect.innerHTML="<option value=''>Select Vehicle</option>";
+    data.vehicles.forEach(v=>{ const opt=document.createElement("option"); opt.value=v; opt.textContent=v; vehicleSelect.appendChild(opt); });
+    lightbarSelect.innerHTML="<option value=''>Select Lightbar</option>";
+    data.mainLights.forEach(l=>{ const opt=document.createElement("option"); opt.value=l; opt.textContent=l; lightbarSelect.appendChild(opt); });
+    decalSelect.innerHTML="<option value='Black Decal'>Black Decal</option>";
+  }
 
-    selectEl.innerHTML = "";
-    contentEl.innerHTML = "";
+  divisionSelect.addEventListener("change",()=>{ populateRanks(); checkConfig(); });
+  rankSelect.addEventListener("change",()=>{ updateVehiclesAndLightbar(); checkConfig(); });
+  vehicleSelect.addEventListener("change",checkConfig);
+  lightbarSelect.addEventListener("change",checkConfig);
 
-    const divisions = Object.keys(rulesData).sort();
-    divisions.forEach((div) => {
-      const opt = document.createElement("option");
-      opt.value = div;
-      opt.textContent = div;
-      selectEl.appendChild(opt);
+  /** ------------------ CHECKER ------------------ **/
+
+  function getData(){ const div=divisionSelect.value; const rank=rankSelect.value; return div && rank && rulesData[div] && rulesData[div][rank]?rulesData[div][rank]:null; }
+
+  function checkConfig(){
+    const data=getData();
+    if(!data){ checkerResult.textContent="Select division and rank."; return; }
+    const vehicle=vehicleSelect.value; const lightbar=lightbarSelect.value;
+    const lighting=getLighting(); const accessories=getAccessories();
+    const messages=[];
+
+    if(!vehicle) messages.push("Select a vehicle.");
+    else if(!data.vehicles.includes(vehicle)) messages.push(`Vehicle "${vehicle}" not allowed.`);
+
+    if(!lightbar) messages.push("Select a lightbar.");
+    else if(!data.mainLights.includes(lightbar)) messages.push(`Lightbar "${lightbar}" not allowed.`);
+
+    // Additional lighting
+    (data.additionalLighting||[]).forEach(l=>{ if(!lighting.includes(l)) messages.push(`Required additional lighting missing: ${l}`); });
+    lighting.forEach(l=>{ if(![...data.mainLights,...data.rearLights,...(data.additionalLighting||[])].includes(l)) messages.push(`Additional lighting "${l}" not allowed.`); });
+
+    // Accessories
+    (data.accessories||[]).forEach(a=>{ 
+      if(a!=="Trailer Hitch" && !accessories.includes(a)) messages.push(`Required accessory missing: ${a}`);
+    });
+    accessories.forEach(a=>{ 
+      if(!(data.accessories||[]).includes(a)) messages.push(`Accessory "${a}" not allowed.`); 
+      if(optionalRules[a] && !accessories.includes(optionalRules[a])) messages.push(`Accessory "${a}" requires "${optionalRules[a]}" to be selected.`);
     });
 
-    divisions.forEach((div) => {
-      const divSlug = slug(div);
-      const section = document.createElement("div");
-      section.className = "vehicle-guide-section vehicle-guide-section--" + divSlug;
-      section.id = "division-" + divSlug;
-      section.setAttribute("data-division", div);
+    checkerResult.textContent = messages.length? messages.join(" ") : "Configuration approved.";
+    checkerResult.classList.toggle("error",messages.length>0);
+    checkerResult.classList.toggle("ok",messages.length===0);
+  }
 
-      const h3 = document.createElement("h3");
-      h3.textContent = "Division: " + div;
-      section.appendChild(h3);
+  /** ------------------ STATIC VEHICLE GUIDE ------------------ **/
 
-      const divDivider = document.createElement("div");
-      divDivider.className = "divider";
-      section.appendChild(divDivider);
+  function buildVehicleGuide(){
+    vehicleGuideContent.innerHTML="";
+    Object.keys(rulesData).forEach(div=>{
+      const section=document.createElement("div");
+      section.className="vehicle-guide-section";
+      const h3=document.createElement("h3"); h3.textContent=div; section.appendChild(h3);
 
-      const ranks = Object.keys(rulesData[div]).sort((a, b) => {
-        const ai = RANK_ORDER.indexOf(a);
-        const bi = RANK_ORDER.indexOf(b);
-        if (ai !== -1 && bi !== -1) return ai - bi;
-        return String(a).localeCompare(b);
-      });
+      Object.keys(rulesData[div]).forEach(rank=>{
+        const data=rulesData[div][rank];
+        const rankBlock=document.createElement("div");
+        const title=document.createElement("h4"); title.textContent=rank; rankBlock.appendChild(title);
 
-      ranks.forEach((rank) => {
-        const data = rulesData[div][rank];
-        const rankBlock = document.createElement("div");
-        rankBlock.className = "vehicle-guide-rank";
-
-        const rankTitle = document.createElement("h4");
-        rankTitle.textContent = rank;
-        rankBlock.appendChild(rankTitle);
-
-        function addList(label, items) {
-          if (!items || !items.length) return;
-          const lbl = document.createElement("p");
-          lbl.className = "guide-label";
-          lbl.textContent = label;
-          rankBlock.appendChild(lbl);
-          const ul = document.createElement("ul");
-          items.forEach((item) => {
-            const li = document.createElement("li");
-            li.textContent = item;
-            ul.appendChild(li);
-          });
-          rankBlock.appendChild(ul);
+        function addList(label,items){
+          if(!items||!items.length) return;
+          const p=document.createElement("p"); p.className="guide-label"; p.textContent=label; rankBlock.appendChild(p);
+          const ul=document.createElement("ul"); items.forEach(i=>{ const li=document.createElement("li"); li.textContent=i; ul.appendChild(li); }); rankBlock.appendChild(ul);
         }
 
-        addList("Vehicles", data.ALLOWED_CARS);
-        if (ranks.length > 1 && ranks.indexOf(rank) > 0) {
-          const note = document.createElement("p");
-          note.className = "muted";
-          note.style.fontSize = "12px";
-          note.textContent = "Higher ranks may also use vehicles allowed for lower ranks in this division.";
-          rankBlock.appendChild(note);
-        }
-        addList("Decals", data.DECALS);
-        addList("Lightbar", data.LIGHTBAR);
-        addList("Required additional lighting", data.REQUIRED_LIGHTING);
-        addList("Required accessories", data.REQUIRED_ACCESSORIES);
-        addList("Optional accessories", data.OPTIONAL_ACCESSORIES);
-
-        const optRules = Object.keys(optionalRules).filter((o) => (data.OPTIONAL_ACCESSORIES || []).includes(o));
-        if (optRules.length) {
-          const optBlock = document.createElement("div");
-          optBlock.className = "vehicle-guide-optional-rules";
-          const label = document.createElement("span");
-          label.className = "guide-label";
-          label.textContent = "When using optional accessories";
-          optBlock.appendChild(label);
-          const ul = document.createElement("ul");
-          optRules.forEach((o) => {
-            const li = document.createElement("li");
-            li.innerHTML = "If you select <strong>" + o + "</strong> you must also use <strong>" + optionalRules[o] + "</strong>.";
-            ul.appendChild(li);
-          });
-          optBlock.appendChild(ul);
-          rankBlock.appendChild(optBlock);
-        }
-
+        addList("Vehicles",data.vehicles);
+        addList("Main Lights",data.mainLights);
+        addList("Rear Lights",data.rearLights);
+        addList("Additional Lighting",data.additionalLighting);
+        addList("Accessories",data.accessories);
+        addList("Antennas",data.antennas);
+        addList("Spotlights",data.spotlights);
         section.appendChild(rankBlock);
       });
 
-      contentEl.appendChild(section);
-    });
-
-    function showDivision(value) {
-      contentEl.querySelectorAll(".vehicle-guide-section").forEach(function (el) {
-        el.classList.toggle("vehicle-guide-section--visible", el.getAttribute("data-division") === value);
-      });
-    }
-
-    if (divisions.length) {
-      selectEl.value = divisions[0];
-      showDivision(divisions[0]);
-    }
-    selectEl.addEventListener("change", function () {
-      showDivision(selectEl.value);
+      vehicleGuideContent.appendChild(section);
     });
   }
 
-  function loadRules() {
-    fetch("rules.txt")
-      .then((r) => r.text())
-      .then((txt) => {
-        parseRules(txt);
-        updateDivisionOptions();
-        buildGuide();
-        checkConfig();
-      })
-      .catch(function () {
-        checkerResult.textContent = "Could not load rules.";
-      });
-  }
-
-  loadRules();
+  populateDivisions();
+  buildVehicleGuide();
 })();

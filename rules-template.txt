@@ -59,7 +59,7 @@ OPTIONAL_ACCESSORIES:ALPR,Grappler;
 # Use "DIVISION: Name" for other divisions. One rank block per division if all share same rules.
 
 HSPU = ALLOWED_CARS:Special Vehicle 1,Special Vehicle 2;
-DECALS:Division Decal;
+DECALS:Black Decal;
 LIGHTBAR:Visor Lights,Legacy Lightbar;
 REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights;
 REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
@@ -68,10 +68,97 @@ OPTIONAL_ACCESSORIES:ALPR;
 # -------------------
 # DIVISION: SRT
 # -------------------
+# Ranks: highest first. Higher ranks inherit vehicles from lower ranks.
+# Ranks used:
+# CHIEF+, SO (Senior Operative), OP (Operative), PO (Probationary Operative)
 
-SRT = ALLOWED_CARS:SRT Vehicle 1,SRT Vehicle 2,Equipment Trailer;
-DECALS:Division Decal;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
-OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight;
+SRT_CHIEF = ALLOWED_CARS:
+2008 Chevlon Camion PPV,
+2015 Bullhorn Prancer Pursuit,
+2019 Chevlon Plotoro,
+2020 Emergency Services Falcon Advance+,
+2011 SWAT Truck,
+Equipment Trailer;
+DECALS:Black Decal;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:
+Side Window Lights,
+Plate Lights,
+Fender Lights,
+Fog Lights,
+Small Siderunners,
+Rear Light Stick;
+REQUIRED_ACCESSORIES:
+Pushbar,
+Wraparound Bar,
+Trailer Hitch;
+OPTIONAL_ACCESSORIES:
+ALPR,
+LED Spotlight,
+Passenger Spotlight;
+
+SRT_SO = ALLOWED_CARS:
+2008 Chevlon Camion PPV,
+2015 Bullhorn Prancer Pursuit,
+2019 Chevlon Plotoro,
+2020 Emergency Services Falcon Advance+,
+Equipment Trailer;
+DECALS:Black Decal;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:
+Side Window Lights,
+Plate Lights,
+Fender Lights,
+Fog Lights,
+Small Siderunners,
+Siderunners,
+Rear Light Stick;
+REQUIRED_ACCESSORIES:
+Pushbar,
+Wraparound Bar,
+Trailer Hitch;
+OPTIONAL_ACCESSORIES:
+ALPR,
+LED Spotlight,
+Passenger Spotlight;
+
+SRT_OP = ALLOWED_CARS:
+2008 Chevlon Camion PPV,
+2015 Bullhorn Prancer Pursuit,
+2019 Chevlon Plotoro,
+Equipment Trailer;
+DECALS:Black Decal;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:
+Side Window Lights,
+Plate Lights,
+Fender Lights,
+Fog Lights,
+Small Siderunners,
+Rear Light Stick;
+REQUIRED_ACCESSORIES:
+Pushbar,
+Wraparound Bar,
+Trailer Hitch;
+OPTIONAL_ACCESSORIES:
+ALPR;
+
+SRT_PO = ALLOWED_CARS:
+2008 Chevlon Camion PPV,
+2015 Bullhorn Prancer Pursuit,
+Equipment Trailer;
+DECALS:Black Decal;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:
+Side Window Lights,
+Plate Lights,
+Fender Lights,
+Fog Lights,
+Small Siderunners,
+Rear Light Stick;
+REQUIRED_ACCESSORIES:
+Pushbar,
+Wraparound Bar,
+Trailer Hitch;
+OPTIONAL_ACCESSORIES:
+ALPR;
