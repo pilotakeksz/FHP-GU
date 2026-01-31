@@ -129,6 +129,7 @@ def parse_roster(csv_text):
         "SENIOR HIGH RANK",
         "HIGH RANK",
         "SERGEANTS PROGRAMME",
+        "SERGEANTS PROGRAM",
         "LOW RANKS",
     ]
 
@@ -143,7 +144,7 @@ def parse_roster(csv_text):
         row_text = " ".join(row).upper()
         for d in dividers:
             if d in row_text:
-                current_section = d
+                current_section = "SERGEANTS PROGRAMME" if d == "SERGEANTS PROGRAM" else d
                 break
         else:
             if _cell(row, 2).lower() == "callsign":
@@ -202,6 +203,136 @@ def _roster_tier(callsign):
     return (None, None)
 
 
+SECTION_TO_TIER = {
+    "SENIOR HIGH RANK": ("Senior High Rank", "shr"),
+    "HIGH RANK": ("High Rank", "hr"),
+    "SERGEANTS PROGRAMME": ("Sergeants Program", "sp"),
+    "LOW RANKS": ("Low Rank", "lr"),
+}
+
+
+def _escape(s):
+    if not s:
+        return ""
+    return (
+        str(s)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
+
+
+def _roster_card(t, is_hicom=False):
+    name = _escape(t.get("displayName") or t.get("roblox", ""))
+    rank = _escape(t.get("rank", ""))
+    callsign = _escape(t.get("callsign", ""))
+    avatar = t.get("avatarPath", "").strip()
+    if not avatar:
+        avatar = FALLBACK_AVATAR
+    specialties = t.get("specialties") or ""
+    specialties_kind = t.get("specialtiesKind")
+    spec_class = ""
+    if specialties_kind == "both":
+        spec_class = "specialties specialties--both"
+    elif specialties_kind == "hspu":
+        spec_class = "specialties specialties--hspu"
+    elif specialties_kind == "srt":
+        spec_class = "specialties specialties--srt"
+    spec_attr = f' class="{spec_class}"' if spec_class else ""
+    spec_p = f'<p class="specialties{spec_attr}">{_escape(specialties)}</p>' if specialties else ""
+    if is_hicom:
+        return f"""            <div class="leadership-card">
+              <img src="{_escape(avatar)}" alt="{name}" class="avatar" />
+              <p class="name">{name}</p>
+              <p class="rank">{rank}</p>
+              <p class="callsign">{callsign}</p>
+              {spec_p}
+            </div>"""
+    return f"""            <div class="roster-card">
+              <img src="{_escape(avatar)}" alt="{name}" class="avatar" />
+              <p class="name">{name}</p>
+              <p class="rank">{rank}</p>
+              <p class="callsign">{callsign}</p>
+              {spec_p}
+            </div>"""
+
+
+def build_troopers_html(hicom, regular_all):
+    cards_hicom = "\n".join(_roster_card(t, is_hicom=True) for t in hicom)
+    sections_html = []
+    for section_key, (title, suffix) in SECTION_TO_TIER.items():
+        tier_troopers = [t for t in regular_all if t.get("section") == section_key]
+        if not tier_troopers:
+            continue
+        cards = "\n".join(_roster_card(t, is_hicom=False) for t in tier_troopers)
+        sections_html.append(
+            f"""        <div class="rank-section roster-tier--{suffix}">
+          <h3 class="rank-title">{_escape(title)}</h3>
+          <div class="roster-grid">
+{cards}
+          </div>
+        </div>"""
+        )
+    sections_body = "\n".join(sections_html)
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FHP Ghost Unit Troopers</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/roster.css" />
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="page-wrap">
+    <header>
+      <div class="nav-wrap">
+        <div class="brand">
+            <img src="assets/logo.png" alt="FHP Ghost Unit logo" class="logo" />
+            <span class="eyebrow">FSRP • Ghost Unit</span>
+            <h1>Trooper Roster</h1>
+        </div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="handbook.html">Handbook</a>
+          <a href="chain-of-command.html">Chain of Command</a>
+          <a href="vehicle-guidelines.html">Vehicle Guidelines</a>
+          <a class="active" href="troopers.html">Troopers</a>
+          <a href="official_media.html">Official Media</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="intro">
+        <span class="tag">Active Roster</span>
+      </section>
+
+      <section class="section">
+        <div class="hicom-section">
+          <h3 class="rank-title">High Command</h3>
+          <div class="leadership-row">
+{cards_hicom}
+          </div>
+        </div>
+{sections_body}
+      </section>
+    </main>
+
+    <footer>
+       <span id="y"></span> FSRP • Florida Highway Patrol Ghost Unit
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+"""
+
+
 def main():
     args = parse_args()
 
@@ -246,6 +377,12 @@ def main():
 
         url = get_avatar_url(uid)
         t["avatarPath"] = rel if download_avatar(url, path) else FALLBACK_AVATAR
+
+    html = build_troopers_html(hicom, regular_all)
+    out_path = os.path.join(PROJECT_ROOT, "troopers.html")
+    with open(out_path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"Wrote {out_path}")
 
     print("Done.")
 

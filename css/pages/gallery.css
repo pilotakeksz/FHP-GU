@@ -1,5 +1,118 @@
 /* Official Media Gallery Page */
 
+/* Admin / Mod: discrete, out of the way (footer) */
+.admin-area {
+  margin: 0;
+  padding: 0;
+}
+.admin-area--footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 12px;
+  margin-left: auto;
+}
+.admin-login-wrap.hidden,
+.admin-panel.hidden,
+.manage-mods-wrap.hidden,
+.login-form.hidden,
+.manage-mods-form.hidden {
+  display: none !important;
+}
+.admin-btn-discrete {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+.admin-btn-discrete:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+.admin-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.admin-panel-user {
+  font-size: 11px;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.admin-btn-logout:hover {
+  color: #ff9a8a;
+}
+.manage-mods-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.manage-mods-form {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 6px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 280px;
+  box-shadow: var(--shadow);
+}
+.manage-mods-form h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--accent);
+}
+.login-form {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 6px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 280px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+.login-form h3 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--accent);
+}
+.admin-login-wrap,
+.manage-mods-wrap {
+  position: relative;
+}
+.gallery-item-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  padding: 6px 12px;
+  font-size: 11px;
+  background: rgba(255, 80, 80, 0.9);
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.gallery-item-delete:hover {
+  background: rgba(255, 100, 100, 1);
+}
+
 .page-gallery .wrap {
   display: flex;
   flex-direction: column;
@@ -67,6 +180,47 @@
 
 .upload-form.hidden {
   display: none;
+}
+
+.upload-export-wrap {
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.upload-export-wrap.hidden {
+  display: none !important;
+}
+.upload-export-wrap .upload-export-title {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+.upload-export-wrap .upload-export-step {
+  margin: 8px 0;
+}
+.upload-export-wrap code {
+  font-size: 12px;
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.upload-export-wrap .upload-export-json {
+  margin: 8px 0;
+  padding: 10px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.upload-export-wrap button {
+  margin-right: 8px;
+  margin-top: 6px;
 }
 
 /* Semi-transparent overlay behind form */

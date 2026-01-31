@@ -1,59 +1,95 @@
 # ============================
-# FHP Ghost Unit — Vehicle Rules
-# Date: 10/16/25
-# Updated: 12/12/25
+# Vehicle Rules — Template
+# Copy to rules.txt and fill in your divisions, ranks, and options.
 # ============================
 
 # -------------------
 # OPTIONAL RULES
 # -------------------
-# Format: optional => mandatory if selected
-ALPR => Pushbar
+# When an optional accessory is selected, another must also be selected.
+# Format: optional_accessory => required_accessory
+# Example: selecting ALPR requires Pushbar to be selected.
+Pushbar => Wraparound Pushbar
 
 # -------------------
 # DIVISION Normal
 # -------------------
-HICOM = ALLOWED_CARS:Mobile Command 2005,Chevlon Corbeta RZR 2014,Bullhorn Prancer Pursuit 2015,Bullhorn Prancer Pursuit 2011,Bullhorn Prancer Pursuit Widebody 2020,Bullhorn Pueblo Pursuit 2018,Chevlon Amigo ZLR 2011,Chevlon Antelope 1994,Chevlon Camion PPV 2018,Chevlon Camion PPV 2021,Chevlon Platoro PPV 2019,Chevlon PPV 2008,Equipment Trailer,Emergency Services Falcon Advance+ 2020,Falcon Interceptor Utility 2019,Falcon Estallion 2024,Falcon Stallion 350 2015,Stuttgart Runner 2020,SWAT Armored Truck 2011;
-DECALS:FHP Ghost Unit | WL | White,FHP Ghost Unit | WL ANTENNAS;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+# Ranks: highest first (HICOM, SHR, HR, SGT, LR). Higher ranks inherit vehicles from lower ranks.
+# First line for each rank: RANK = ALLOWED_CARS:Vehicle1,Vehicle2,...;
+# Following lines (no "RANK = "): DECALS:, LIGHTBAR:, REQUIRED_LIGHTING:, REQUIRED_ACCESSORIES:, OPTIONAL_ACCESSORIES:
+
+HICOM = ALLOWED_CARS:Vehicle A,Vehicle B,Vehicle C;
+DECALS:Decal White,Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar;
 OPTIONAL_ACCESSORIES:ALPR,Grappler;
 
-SHR = ALLOWED_CARS:Bullhorn Prancer Pursuit 2011,Chevlon Platoro PPV 2019,Falcon Estallion 2024,Bullhorn Prancer Pursuit 2015,Bullhorn Pueblo Pursuit 2018,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
-DECALS:FHP Ghost Unit | BLK;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+SHR = ALLOWED_CARS:Vehicle B,Vehicle C;
+DECALS:Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar;
 OPTIONAL_ACCESSORIES:ALPR,Grappler;
 
-HR = ALLOWED_CARS:Chevlon Camion PPV 2021,Falcon Interceptor Utility 2024,Bullhorn Prancer Pursuit 2011,Chevlon Platoro PPV 2019,Falcon Estallion 2024,Bullhorn Prancer Pursuit 2015,Bullhorn Pueblo Pursuit 2018,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
-DECALS:FHP Ghost Unit | WL;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Fender Lights,Siderunner;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+HR = ALLOWED_CARS:Vehicle C,Vehicle D;
+DECALS:Decal White;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar;
 OPTIONAL_ACCESSORIES:ALPR,Grappler;
 
-SGT = ALLOWED_CARS:Bullhorn Pueblo Pursuit 2020,Falcon Interceptor Utility 2019,Falcon Interceptor Utility 2013,Bullhorn Prancer Pursuit 2015,Bullhorn Prancer Pursuit 2011,Chevlon Camion PPV 2018,Chevlon PPV 2008,Equipment Trailer,Lighting Trailer;
-DECALS:FHP Ghost Unit | WL;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Small Siderunners,Fender Lights;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+SGT = ALLOWED_CARS:Vehicle D,Vehicle E;
+DECALS:Decal White;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar;
 OPTIONAL_ACCESSORIES:ALPR,Grappler;
 
-LR = ALLOWED_CARS:Bullhorn Prancer Pursuit 2015,Chevlon Antelope 1994,Chevlon PPV 2008,Chevlon Camion PPV 2018,Equipment Trailer,Lighting Trailer;
-DECALS:FHP Ghost Unit | WL;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Small Siderunners;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
+LR = ALLOWED_CARS:Vehicle E;
+DECALS:Decal White;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar;
 OPTIONAL_ACCESSORIES:ALPR,Grappler;
 
 # -------------------
 # DIVISION: HSPU
 # -------------------
-HSPU = ALLOWED_CARS:Chevlon Corbeta RZR 2014 (High Command only),Bullhorn Prancer Pursuit Widebody 2020 (Director+),Falcon Stallion 350 2015 (Head Officer+),Bullhorn Prancer Pursuit 2011 (Senior Officer+),Chevron Amigo ZLR 2011 (Officer First+),Bullhorn Prancer Pursuit 2015 (Probationary Officer/Officer+);
+# Ranks: highest first (DIRECTOR, HEAD_OFFICER, SENIOR_OFFICER, OFFICER_FIRST, PROBATIONARY_OFFICER).
+# Higher ranks inherit vehicles from lower ranks.
+
+DIRECTOR = ALLOWED_CARS:Bullhorn Prancer Pursuit Widebody 2020,Falcon Stallion 350 2015,Bullhorn Prancer Pursuit 2011,Chevron Amigo ZLR 2011,Bullhorn Prancer Pursuit 2015;
 DECALS:FHP Ghost Unit | WL;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
+OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight;
+
+HEAD_OFFICER = ALLOWED_CARS:Falcon Stallion 350 2015,Bullhorn Prancer Pursuit 2011,Chevron Amigo ZLR 2011,Bullhorn Prancer Pursuit 2015;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
+OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight;
+
+SENIOR_OFFICER = ALLOWED_CARS:Bullhorn Prancer Pursuit 2011,Chevron Amigo ZLR 2011,Bullhorn Prancer Pursuit 2015;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
+OPTIONAL_ACCESSORIES:ALPR;
+
+OFFICER_FIRST = ALLOWED_CARS:Chevron Amigo ZLR 2011,Bullhorn Prancer Pursuit 2015;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
+OPTIONAL_ACCESSORIES:ALPR;
+
+PROBATIONARY_OFFICER = ALLOWED_CARS:Bullhorn Prancer Pursuit 2015;
+DECALS:FHP Ghost Unit | WL;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
 REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Small Siderunners;
 REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar,Grappler;
 OPTIONAL_ACCESSORIES:ALPR;
@@ -61,9 +97,32 @@ OPTIONAL_ACCESSORIES:ALPR;
 # -------------------
 # DIVISION: SRT
 # -------------------
-SRT = ALLOWED_CARS:2008 Chevlon Camion PPV (Probationary Operative+),2015 Bullhorn Prancer Pursuit (Probationary Operative+),Equipment Trailer (Probationary Operative+),2019 Chevlon Platoro (Operative+),2020 Emergency Services Falcon Advance+ (Senior Operative+),2011 SWAT Truck (Senior Operative+, only if >4 units & Chief+ permission);
-DECALS:FHP Ghost Unit | WL;
-LIGHTBAR:Visor Lights,Legacy Lightbar;
-REQUIRED_LIGHTING:Rear Window Lights,Side Window Lights,Plate Lights,Fog Lights,Front Bumper Lights (ES Falcon Advance+),Fender Lights,Small Siderunners,Siderunners;
-REQUIRED_ACCESSORIES:Pushbar,Wraparound Bar;
-OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight;
+# Ranks: highest first (CHIEF, SO, OP, PO). Higher ranks inherit vehicles from lower ranks.
+
+CHIEF = ALLOWED_CARS:2008 Chevlon Camion PPV,2015 Bullhorn Prancer Pursuit,2019 Chevlon Plotoro,2020 Emergency Services Falcon Advance+,2011 SWAT Truck,Equipment Trailer;
+DECALS:Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Side Window Lights,Plate Lights,Fender Lights,Fog Lights,Siderunners,Rear Light Stick;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar,5G Antenna,Long Range Antenna,Low Profile Antenna;
+OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight,Trailer Hitch;
+
+SO = ALLOWED_CARS:2008 Chevlon Camion PPV,2015 Bullhorn Prancer Pursuit,2019 Chevlon Plotoro,2020 Emergency Services Falcon Advance+,Equipment Trailer;
+DECALS:Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Side Window Lights,Plate Lights,Fender Lights,Fog Lights,Siderunners,Rear Light Stick;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar,5G Antenna,Long Range Antenna,Low Profile Antenna;
+OPTIONAL_ACCESSORIES:ALPR,LED Spotlight,Passenger Spotlight,Trailer Hitch;
+
+OP = ALLOWED_CARS:2008 Chevlon Camion PPV,2015 Bullhorn Prancer Pursuit,2019 Chevlon Plotoro,Equipment Trailer;
+DECALS:Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Side Window Lights,Plate Lights,Fender Lights,Fog Lights,Small Siderunners,Rear Light Stick;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar,5G Antenna,Long Range Antenna,Low Profile Antenna;
+OPTIONAL_ACCESSORIES:ALPR,Trailer Hitch;
+
+PO = ALLOWED_CARS:2008 Chevlon Camion PPV,2015 Bullhorn Prancer Pursuit,Equipment Trailer;
+DECALS:Decal Black;
+LIGHTBAR:Legacy Lightbar,Visor Lights;
+REQUIRED_LIGHTING:Side Window Lights,Plate Lights,Fender Lights,Fog Lights,Small Siderunners,Rear Light Stick;
+REQUIRED_ACCESSORIES:Pushbar,Wraparound Pushbar,5G Antenna,Long Range Antenna,Low Profile Antenna;
+OPTIONAL_ACCESSORIES:ALPR,Trailer Hitch;
